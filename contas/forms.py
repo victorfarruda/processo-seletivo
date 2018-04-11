@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Perfil
+from .models import Perfil, Usuario
 
 class PerfilForm(forms.ModelForm):
     nome = forms.CharField(label='Nome', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}))
@@ -25,8 +25,8 @@ class UsuarioForm(forms.ModelForm):
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme Senha'}))
 
     class Meta:
-        model = Perfil
-        exclude = ['endereco']
+        model = Usuario
+        fields = ['email', 'password']
 
     def clean_password(self):
         password = self.cleaned_data.get("password")

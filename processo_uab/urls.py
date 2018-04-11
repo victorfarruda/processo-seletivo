@@ -16,6 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from inscricoes.views import inscricao
+from cursos.views import get_cursos
+
 urlpatterns = [
+    url(r'^inscricao/$', inscricao, name='inscricao'),
+    url(r'^inscricao/get_cursos/(?P<id>[0-9])$', get_cursos, name='cursos'),
     url(r'^admin/', admin.site.urls),
 ]

@@ -7,17 +7,23 @@
     <hr/>
     <div class="form-row">
         {% for perfil in form_perfil %}
-            <div class="
-            {% if forloop.counter == 1 %}col-4
-            {% elif forloop.counter == 2 %}col-6
+            <div class="form-group
+            {% if forloop.counter == 2 %}col-6
             {% elif forloop.counter == 3 %}col-2
-            {% elif forloop.counter == 4 %}col-4
-            {% elif forloop.counter == 5 %}col-2
-            {% else %}col-3{% endif %}">
+            {% else %}col-4{% endif %}">
                 <label for="{{ perfil.name }}">
                     {{ perfil.label }}
                 </label>
                 {{ perfil }}
+            </div>
+        {% endfor %}
+
+        {% for usuario in form_usuario %}
+            <div class="form-group col-4">
+                <label for="{{ usuario.name }}">
+                    {{ usuario.label }}
+                </label>
+                {{ usuario }}
             </div>
         {% endfor %}
     </div>

@@ -15,8 +15,8 @@ class Perfil(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.nome
+    # def __str__(self):
+    #     return self.nome
 
 
 class ManagerUsuario(BaseUserManager):
@@ -55,11 +55,11 @@ class Usuario(AbstractBaseUser):
 
     objects = ManagerUsuario()
 
-    def __str__(self):
-        return self.perfil
+    # def __str__(self):
+    #     return self.nome
 
     def get_short_name(self):
-        return self.perfil
+        return self.nome
 
     def get_full_name(self):
         return self.perfil.nome + ' ' + self.perfil.sobrenome
