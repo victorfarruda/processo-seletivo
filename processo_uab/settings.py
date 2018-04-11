@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cidades',
     'contas',
     'cursos',
+    'inscricoes',
     'enderecos',
 ]
 
