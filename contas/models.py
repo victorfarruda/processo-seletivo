@@ -43,6 +43,7 @@ class ManagerUsuario(BaseUserManager):
         return user
 
 class Usuario(AbstractBaseUser):
+    nome      = models.CharField(max_length=120, blank=True, null=True)
     email     = models.CharField(max_length=120, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin  = models.BooleanField(default=False)
@@ -58,7 +59,7 @@ class Usuario(AbstractBaseUser):
         return self.perfil
 
     def get_short_name(self):
-        return self.perfil.nome
+        return self.perfil
 
     def get_full_name(self):
         return self.perfil.nome + ' ' + self.perfil.sobrenome

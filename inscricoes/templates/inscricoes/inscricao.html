@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <h1>Informações Pessoais</h1>
+    <hr/>
+    <div class="form-row">
+        {% for perfil in form_perfil %}
+            <div class="
+            {% if forloop.counter == 1 %}col-4
+            {% elif forloop.counter == 2 %}col-6
+            {% elif forloop.counter == 3 %}col-2
+            {% elif forloop.counter == 4 %}col-4
+            {% elif forloop.counter == 5 %}col-2
+            {% else %}col-3{% endif %}">
+                <label for="{{ perfil.name }}">
+                    {{ perfil.label }}
+                </label>
+                {{ perfil }}
+            </div>
+        {% endfor %}
+    </div>
+    <h1>Endereço</h1>
+    <hr/>
+    <div class="form-row">
+        {% for endereco in form_endereco %}
+            <div class="form-group
+                {% if forloop.counter == 2 %}col-6
+                {% elif forloop.counter == 3 %}col-2
+                {% else %}col-4{% endif %}">
+                <label for="{{ endereco.name }}">
+                    {{ endereco.label }}
+                </label>
+                {{ endereco }}
+            </div>
+        {% endfor %}
+    </div>
+    <h1>Inscrição</h1>
+    <hr/>
+    <div class="form-row">
+        {% for inscricao in form_inscricao %}
+            <div class="form-group col-6">
+                <label for="{{ inscricao.name }}">
+                    {{ inscricao.label }}
+                </label>
+                {{ inscricao }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Inscrever</button>
+</form>
+{% endblock %}
+
+
+{% block js %}
+    <!--Script Costumizado-->
+    <script>
+        $(document).ready(function(){
+            $('#id_curso').html('<option>---------</option>')
+
+            // Máscaras
+            $('.cep').mask('00000-000');
+            $('.cpf').mask('000.000.000-00', {reverse: true});
+            $('.celular').mask('(00) 00000-0000');
+            $('.data').mask("00/00/0000", {placeholder: "__/__/____"});
+
+            // Busca CEP
+            $("#id_cep").change(function(){
+                $.ajax({
+                    dataType: "json",
+                    url: 'https://viacep.com.br/ws/' + $(this).val() + '/json/',
+                    success: function(data){
+                        $("#id_rua").val(data.logradouro);
+                        $("#id_bairro").val(data.bairro);
+                        $("#id_cidade").val(data.localidade);
+                        $("#id_estado").val(data.uf);
+                    }
+                });
+            });
+
+            // Pegar csrftoken
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            // Altera Curso
+            $("#id_cidade_curso").change(function(){
+                $.ajax({
+                    dataType: "json",
+                    url: 'get_cursos/' + $(this).val(),
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: csrftoken
+                    },
+                    success: function(data){
+                        var text = ''
+                        var i;
+                        for (i in data){
+                            text = text + '<option value="' + data[i].id + '">' + data[i].curso + '</option>'
+                        }
+                        $('#id_curso').html(text)
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
