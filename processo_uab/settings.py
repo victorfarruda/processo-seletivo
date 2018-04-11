@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Meus Apps
     'cidades',
     'cursos',
+    'enderecos',
 ]
 
 MIDDLEWARE = [
