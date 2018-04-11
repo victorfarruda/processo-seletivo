@@ -10,7 +10,10 @@
             <div class="form-group
             {% if forloop.counter == 2 %}col-6
             {% elif forloop.counter == 3 %}col-2
-            {% else %}col-4{% endif %}">
+            {% else %}col-4{% endif %}
+            {% if endereco.errors %}is-invalid
+            {% else %}is-valid
+            {% endif %}">
                 <label for="{{ perfil.name }}">
                     {{ perfil.label }}
                 </label>
@@ -19,7 +22,10 @@
         {% endfor %}
 
         {% for usuario in form_usuario %}
-            <div class="form-group col-4">
+            <div class="form-group col-4
+                {% if endereco.errors %}is-invalid
+                {% else %}is-valid
+                {% endif %}">
                 <label for="{{ usuario.name }}">
                     {{ usuario.label }}
                 </label>
@@ -34,7 +40,10 @@
             <div class="form-group
                 {% if forloop.counter == 2 %}col-6
                 {% elif forloop.counter == 3 %}col-2
-                {% else %}col-4{% endif %}">
+                {% else %}col-4{% endif %}
+                {% if endereco.errors %}is-invalid
+                {% else %}is-valid
+                {% endif %}">
                 <label for="{{ endereco.name }}">
                     {{ endereco.label }}
                 </label>
@@ -46,7 +55,10 @@
     <hr/>
     <div class="form-row">
         {% for inscricao in form_inscricao %}
-            <div class="form-group col-6">
+            <div class="form-group col-6
+            {% if endereco.errors %}is-invalid
+            {% else %}is-valid
+            {% endif %}">
                 <label for="{{ inscricao.name }}">
                     {{ inscricao.label }}
                 </label>

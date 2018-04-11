@@ -18,8 +18,10 @@ from django.contrib import admin
 
 from inscricoes.views import inscricao
 from cursos.views import get_cursos
+from .views import inicio
 
 urlpatterns = [
+    url(r'^$', inicio, name='inicio'),
     url(r'^inscricao/$', inscricao, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>[0-9])$', get_cursos, name='cursos'),
     url(r'^admin/', admin.site.urls),
