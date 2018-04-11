@@ -33,11 +33,11 @@ class UsuarioForm(forms.ModelForm):
         password_confirm = self.cleaned_data.get("password_confirm")
         if password and password_confirm and password != password_confirm:
             raise forms.ValidationError("Senhas não conferem!")
-        return password_confirm
+        return password
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password_confirm"])
+        user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
         return user

@@ -16,12 +16,13 @@ def inscricao(request):
         print(endereco.errors)
         print(inscricao.errors)
         print(perfil.errors)
-        if endereco.is_valid() and perfil.is_valid() and inscricao.is_valid():
+        if endereco.is_valid() and perfil.is_valid() and inscricao.is_valid() and usuario.is_valid():
             endereco_obj = endereco.save()
             perfil_obj = perfil.save()
             usuario_obj = usuario.save(commit=False)
             usuario_obj.endereco = endereco_obj
             usuario_obj.perfil = perfil_obj
+            usuario_obj.nome = perfil_obj.nome
             usuario_obj.save()
             inscricao_obj = inscricao.save(commit=False)
             inscricao_obj.candidato = usuario_obj
