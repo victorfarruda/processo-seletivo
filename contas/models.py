@@ -19,7 +19,7 @@ class Perfil(models.Model):
         return self.nome
 
 
-class MyUserManager(BaseUserManager):
+class ManagerUsuario(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
             raise ValueError('Usuário deve ter endereço de e-mail')
@@ -52,13 +52,16 @@ class Usuario(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
 
-    objects = MyUserManager()
+    objects = ManagerUsuario()
 
     def __str__(self):
         return self.perfil
 
     def get_short_name(self):
-        return self.email
+        return self.perfil.nome
+
+    def get_full_name(self):
+        return self.perfil.nome + ' ' + self.perfil.sobrenome
 
     def has_perm(self, perm, obj=None):
         return True
