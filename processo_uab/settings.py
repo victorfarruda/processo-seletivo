@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Meus Apps
     'cidades',
+    'contas',
     'cursos',
     'enderecos',
 ]
