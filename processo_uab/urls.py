@@ -18,13 +18,20 @@ from django.contrib import admin
 
 from .views import inicio_page
 from inscricoes.views import inscricao_page
-from contas.views import login_page
-from cursos.views import get_cursos, get_curso
+from contas.views import (
+    login_page,
+    logout_page
+)
+from cursos.views import (
+    get_cursos,
+    get_curso
+)
 
 
 urlpatterns = [
     url(r'^$', inicio_page, name='inicio'),
     url(r'^login/$', login_page, name='login'),
+    url(r'^logout/$', logout_page, name='logout'),
     url(r'^inscricao/$', inscricao_page, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>\d+)$', get_cursos, name='cursos'),
     url(r'^inscricao/get_curso/(?P<id>\d+)$', get_curso, name='curso'),

@@ -1,4 +1,6 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.http import request
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -22,3 +24,7 @@ def login_page(request):
     }
     return render(request, 'contas/login.html', context)
 
+
+def logout_page(request):
+    logout(request)
+    return redirect('login')

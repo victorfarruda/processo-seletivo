@@ -16,10 +16,6 @@ def inscricao_page(request):
     inscricao = InscricaoForm(request.POST or None)
     usuario = UsuarioForm(request.POST or None)
     if request.method == 'POST':
-        print(usuario.errors)
-        print(endereco.errors)
-        print(inscricao.errors)
-        print(perfil.errors)
         if endereco.is_valid() and perfil.is_valid() and inscricao.is_valid() and usuario.is_valid():
             endereco_obj = endereco.save()
             perfil_obj = perfil.save()
