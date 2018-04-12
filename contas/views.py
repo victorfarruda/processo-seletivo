@@ -15,10 +15,10 @@ def login_page(request):
         if login_form.is_valid():
             email = login_form.cleaned_data.get('email')
             password = login_form.cleaned_data.get('password')
-            print(request.POST)
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
+                return redirect('inicio')
     context = {
         'login': login_form,
     }

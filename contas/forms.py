@@ -61,3 +61,21 @@ class LoginForm(forms.Form):
     email = forms.EmailField(label='E-mail',
                              widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
     password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        usuario = Usuario.objects.filter(email__iexact=email).exists()
+        if not usuario:
+            raise forms.ValidationError("Email não encontrado!")
+        return email
+
+    def clean_password(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+        usuario_existe = Usuario.objects.filter(email__iexact=email).exists()
+        if usuario_existe:
+            usuario = Usuario.objects.get(email__iexact=email)
+            if not usuario.check_password(password):
+                raise forms.ValidationError("Senha Inválida!")
+        return password
+
