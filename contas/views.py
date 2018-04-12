@@ -6,13 +6,13 @@ from .forms import LoginForm
 
 
 def login_page(request):
-    login_form = LoginForm(request.POST or None)
     if request.user.is_authenticated():
         return redirect('inicio')
+    login_form = LoginForm(request.POST or None)
     if request.method == 'POST':
         if login_form.is_valid():
-            email = request.POST.get('email')
-            password = request.POST.get('password')
+            email = login_form.cleaned_data.get('email')
+            password = login_form.cleaned_data.get('password')
             print(request.POST)
             user = authenticate(request, username=email, password=password)
             if user is not None:

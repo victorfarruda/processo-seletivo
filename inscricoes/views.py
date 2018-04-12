@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.contrib.auth import login
 from django.http import request
+from django.shortcuts import render
+from django.shortcuts import redirect
 
 from .forms import InscricaoForm
 from enderecos.forms import EnderecoForm
 from contas.forms import PerfilForm, UsuarioForm
 
 
-def inscricao(request):
+def inscricao_page(request):
+    if request.user.is_authenticated():
+        return redirect('inicio')
     endereco = EnderecoForm(request.POST or None)
     perfil = PerfilForm(request.POST or None)
     inscricao = InscricaoForm(request.POST or None)
@@ -27,7 +31,8 @@ def inscricao(request):
             inscricao_obj = inscricao.save(commit=False)
             inscricao_obj.candidato = usuario_obj
             inscricao_obj.save()
-            # return redirect('')
+            login(request, usuario_obj)
+            return redirect('login')
     context = {
         'titulo': 'Inscrição - ',
         'form_endereco': endereco,
