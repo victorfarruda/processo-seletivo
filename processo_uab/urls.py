@@ -16,12 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from inscricoes.views import inscricao
-from cursos.views import get_cursos, get_curso
 from .views import inicio
+from inscricoes.views import inscricao
+from contas.views import login_page
+from cursos.views import get_cursos, get_curso
+
 
 urlpatterns = [
     url(r'^$', inicio, name='inicio'),
+    url(r'^login/$', login_page, name='login'),
     url(r'^inscricao/$', inscricao, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>\d+)$', get_cursos, name='cursos'),
     url(r'^inscricao/get_curso/(?P<id>\d+)$', get_curso, name='curso'),
