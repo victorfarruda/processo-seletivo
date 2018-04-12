@@ -171,18 +171,20 @@
 
             // Busca Curso Selecionado
             $("#curso_hidden").ready(function(){
-                $.ajax({
-                    dataType: "json",
-                    url: 'get_curso/' + $("#curso_hidden").val(),
-                    method: "POST",
-                    data: {
-                        csrfmiddlewaretoken: csrftoken
-                    },
-                    success: function(data){
-                        text = '<option value="' + data[0].id + '">' + data[0].curso + '</option>'
-                        $('#id_curso').html(text)
-                    }
-                });
+                if ($("#curso_hidden").val() != ""){
+                    $.ajax({
+                        dataType: "json",
+                        url: 'get_curso/' + $("#curso_hidden").val(),
+                        method: "POST",
+                        data: {
+                            csrfmiddlewaretoken: csrftoken
+                        },
+                        success: function(data){
+                            text = '<option value="' + data[0].id + '">' + data[0].curso + '</option>'
+                            $('#id_curso').html(text)
+                        }
+                    });
+                }
             });
         });
     </script>
