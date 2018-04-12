@@ -12,6 +12,7 @@
     {% url 'logout' as logout_url %}
     {% url 'meus_dados' as meus_dados_url %}
     {% url 'minha_inscricao' as minha_inscricao_url %}
+    {% url 'comprovante_inscricao' as comprovante_inscricao_url %}
     <body>
         <div class="navbar" style="background-color: #0d0f10;">
             <div class="container">
@@ -35,8 +36,8 @@
                             <li class="nav-item {% if meus_dados_url == request.path %}active{% endif %}">
                                 <a class="nav-link" href="{{ meus_dados_url }}">Meus dados</a>
                             </li>
-                            <li class="nav-item {% if inicio_url == request.path %}active{% endif %}">
-                                <a class="nav-link" href="#">Comprovante de Inscrição</a>
+                            <li class="nav-item {% if comprovante_inscricao_url == request.path %}active{% endif %}">
+                                <a class="nav-link" href="{{ comprovante_inscricao_url }}">Comprovante de Inscrição</a>
                             </li>
                         {% endif %}
                     </ul>

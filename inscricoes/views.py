@@ -49,8 +49,18 @@ def inscricao_page(request):
 def minha_inscricao(request):
     usuario = request.user
     inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
-    inscricao_form = MinhaInscricaoForm(request.POST or None, instance=inscricao)
+    if inscricao:
+        inscricao_form = MinhaInscricaoForm(request.POST or None, instance=inscricao)
     context = {
         'form_inscricao': inscricao_form,
     }
     return render(request, 'inscricoes/minha_inscricao.html', context)
+
+
+def comprovante_inscricao(request):
+    usuario = request.user
+    inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
+    context = {
+        'inscricao': inscricao,
+    }
+    return render(request, 'inscricoes/comprovante.html', context)
