@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 from .models import Perfil, Usuario
 
@@ -20,11 +21,31 @@ class PerfilForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PerfilForm, self).__init__(*args, **kwargs)
-        self.fields['rg'].error_messages['required'] = 'O campo RG é obrigatório.'
-        self.fields['rg'].error_messages['unique'] = 'Este número de RG já foi utilizado.'
-        self.fields['cpf'].error_messages['required'] = 'O campo CPF é obrigatório.'
-        self.fields['cpf'].error_messages['unique'] = 'Este número de CPF já foi utilizado.'
         self.fields['data_nasc'].error_messages['invalid'] = 'Insira uma data válida.'
+
+    def clean_rg(self):
+        rg = self.cleaned_data.get('rg')
+        usuario = get_user_model()
+        if not usuario.is_admin:
+            raise forms.ValidationError("Você não pode editar este campo.")
+        if rg is None:
+            raise forms.ValidationError("O campo RG é obrigatório.")
+        existe = Perfil.objects.filter(rg__iexact=rg).exclude(id__exact=self.instance.id).exists()
+        if existe:
+            raise forms.ValidationError("Este número de RG já foi utilizado.")
+        return rg
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        usuario = get_user_model()
+        if not usuario.is_admin:
+            raise forms.ValidationError("Você não pode editar este campo.")
+        if cpf is None:
+            raise forms.ValidationError("O campo CPF é obrigatório.")
+        existe = Perfil.objects.filter(cpf__iexact=cpf).exclude(id__exact=self.instance.id).exists()
+        if existe:
+            raise forms.ValidationError("Este número de CPF já foi utilizado.")
+        return cpf
 
 
 class UsuarioForm(forms.ModelForm):

@@ -3,10 +3,17 @@ from django.http import request
 from django.shortcuts import render
 from django.shortcuts import redirect
 
-from .forms import InscricaoForm
+from .forms import (
+    InscricaoForm,
+    MinhaInscricaoForm
+)
 from enderecos.forms import EnderecoForm
-from contas.forms import PerfilForm, UsuarioForm
+from contas.forms import (
+    PerfilForm,
+    UsuarioForm
+)
 
+from .models import Inscricao
 
 def inscricao_page(request):
     if request.user.is_authenticated():
@@ -37,3 +44,15 @@ def inscricao_page(request):
         'form_inscricao': inscricao,
     }
     return render(request, 'inscricoes/inscricao.html', context)
+
+
+def minha_inscricao(request):
+    usuario = request.user
+    inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
+    inscricao_form = MinhaInscricaoForm(request.POST or None, instance=inscricao)
+    # if inscricao_form.is_valid():
+    #     inscricao_form.save()
+    context = {
+        'form_inscricao': inscricao_form,
+    }
+    return render(request, 'inscricoes/minha_inscricao.html', context)

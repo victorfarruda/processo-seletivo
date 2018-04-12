@@ -17,10 +17,14 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from .views import inicio_page
-from inscricoes.views import inscricao_page
+from inscricoes.views import (
+    inscricao_page,
+    minha_inscricao
+)
 from contas.views import (
     login_page,
-    logout_page
+    logout_page,
+    meus_dados
 )
 from cursos.views import (
     get_cursos,
@@ -32,6 +36,8 @@ urlpatterns = [
     url(r'^$', inicio_page, name='inicio'),
     url(r'^login/$', login_page, name='login'),
     url(r'^logout/$', logout_page, name='logout'),
+    url(r'^candidato/dados/$', meus_dados, name='meus_dados'),
+    url(r'^candidato/inscricao/$', minha_inscricao, name='minha_inscricao'),
     url(r'^inscricao/$', inscricao_page, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>\d+)$', get_cursos, name='cursos'),
     url(r'^inscricao/get_curso/(?P<id>\d+)$', get_curso, name='curso'),

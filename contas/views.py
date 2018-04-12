@@ -4,6 +4,9 @@ from django.contrib.auth import logout
 from django.http import request
 from django.shortcuts import render
 from django.shortcuts import redirect
+
+from contas.forms import PerfilForm
+from enderecos.forms import EnderecoForm
 from .forms import LoginForm
 
 
@@ -28,3 +31,18 @@ def login_page(request):
 def logout_page(request):
     logout(request)
     return redirect('login')
+
+
+def meus_dados(request):
+    usuario = request.user
+    endereco = EnderecoForm(request.POST or None, instance=usuario.endereco)
+    if endereco.is_valid():
+        endereco.save()
+    perfil = PerfilForm(request.POST or None, instance=usuario.perfil)
+    if perfil.is_valid():
+        perfil.save()
+    context = {
+        'form_perfil': perfil,
+        'form_endereco': endereco,
+    }
+    return render(request, 'contas/meus_dados.html', context)

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <h1>Minha Inscrição</h1>
+    <hr/>
+    <div class="form-row">
+        {% for inscricao in form_inscricao %}
+            <div class="form-group col-6">
+                <label for="{{ inscricao.name }}">
+                    {{ inscricao.label }}
+                </label>
+                {% if inscricao.errors %}
+                    {{ inscricao|add_class:"is-invalid" }}
+                    <div class="invalid-feedback">
+                        {% for error in inscricao.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{  inscricao }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</form>
+{% endblock %}

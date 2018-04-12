@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <h1>Informações Pessoais</h1>
+    <hr/>
+    <div class="form-row">
+        {% for perfil in form_perfil %}
+            <div class="form-group
+            {% if forloop.counter == 2 %}col-6
+            {% elif forloop.counter == 3 %}col-2
+            {% else %}col-4{% endif %}">
+                <label for="{{ perfil.name }}">
+                    {{ perfil.label }}
+                </label>
+                {% if perfil.errors %}
+                    {% if perfil.name == 'rg' or perfil.name == 'cpf' %}
+                        {{ perfil|add_class:"is-invalid"|attr:"readonly" }}
+                    {% else %}
+                        {{ perfil|add_class:"is-invalid" }}
+                    {% endif %}
+                    <div class="invalid-feedback">
+                        {% for error in perfil.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% if perfil.name == 'rg' or perfil.name == 'cpf' %}
+                        {{ perfil|attr:"readonly" }}
+                    {% else %}
+                        {{ perfil }}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <h1>Endereço</h1>
+    <hr/>
+    <div class="form-row">
+        {% for endereco in form_endereco %}
+            <div class="form-group
+                {% if forloop.counter == 2 %}col-6
+                {% elif forloop.counter == 3 %}col-2
+                {% else %}col-4{% endif %}">
+                <label for="{{ endereco.name }}">
+                    {{ endereco.label }}
+                </label>
+                {% if endereco.errors %}
+                    {{ endereco|add_class:"is-invalid" }}
+                    <div class="invalid-feedback">
+                        {% for error in endereco.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{  endereco }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Alterar Dados</button>
+</form>
+{% endblock %}
+
+{% block js %}
+    <!--Script Costumizado-->
+    <script>
+        $(document).ready(function(){
+            // Máscaras
+            $('.cep').mask('00000-000');
+            $('.cpf').mask('000.000.000-00', {reverse: true});
+            $('.celular').mask('(00) 00000-0000');
+            $('.data').mask("00/00/0000", {placeholder: "__/__/____"});
+
+            // Busca CEP
+            $("#id_cep").change(function(){
+                $.ajax({
+                    dataType: "json",
+                    url: 'https://viacep.com.br/ws/' + $(this).val() + '/json/',
+                    success: function(data){
+                        $("#id_rua").val(data.logradouro);
+                        $("#id_bairro").val(data.bairro);
+                        $("#id_cidade").val(data.localidade);
+                        $("#id_estado").val(data.uf);
+                    }
+                });
+            });
+        });
+
+    </script>
+{% endblock %}
