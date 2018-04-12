@@ -11,6 +11,7 @@ class InscricaoForm(forms.ModelForm):
     necessidade_esp = forms.CharField(required=False, label='Necessidade Especial',
                              widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Necessidade Especial'}))
     local_prova = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Local da Prova', widget=forms.Select(attrs={'class': 'form-control'}))
+    curso_hidden = forms.CharField(label='', widget=forms.HiddenInput(attrs={'id':'curso_hidden'}))
 
     class Meta:
         model = Inscricao

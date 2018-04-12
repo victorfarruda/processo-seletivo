@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 <form method="POST">
     {% csrf_token %}
@@ -10,26 +12,37 @@
             <div class="form-group
             {% if forloop.counter == 2 %}col-6
             {% elif forloop.counter == 3 %}col-2
-            {% else %}col-4{% endif %}
-            {% if endereco.errors %}is-invalid
-            {% else %}is-valid
-            {% endif %}">
+            {% else %}col-4{% endif %}">
                 <label for="{{ perfil.name }}">
                     {{ perfil.label }}
                 </label>
-                {{ perfil }}
+                {% if perfil.errors %}
+                    {{ perfil|add_class:"is-invalid" }}
+                    <div class="invalid-feedback">
+                        {% for error in perfil.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{  perfil }}
+                {% endif %}
             </div>
         {% endfor %}
-
         {% for usuario in form_usuario %}
-            <div class="form-group col-4
-                {% if endereco.errors %}is-invalid
-                {% else %}is-valid
-                {% endif %}">
+            <div class="form-group col-4">
                 <label for="{{ usuario.name }}">
                     {{ usuario.label }}
                 </label>
-                {{ usuario }}
+                {% if usuario.errors %}
+                    {{ usuario|add_class:"is-invalid" }}
+                    <div class="invalid-feedback">
+                        {% for error in usuario.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{  usuario }}
+                {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -40,14 +53,20 @@
             <div class="form-group
                 {% if forloop.counter == 2 %}col-6
                 {% elif forloop.counter == 3 %}col-2
-                {% else %}col-4{% endif %}
-                {% if endereco.errors %}is-invalid
-                {% else %}is-valid
-                {% endif %}">
+                {% else %}col-4{% endif %}">
                 <label for="{{ endereco.name }}">
                     {{ endereco.label }}
                 </label>
-                {{ endereco }}
+                {% if endereco.errors %}
+                    {{ endereco|add_class:"is-invalid" }}
+                    <div class="invalid-feedback">
+                        {% for error in endereco.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{  endereco }}
+                {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -55,15 +74,25 @@
     <hr/>
     <div class="form-row">
         {% for inscricao in form_inscricao %}
-            <div class="form-group col-6
-            {% if endereco.errors %}is-invalid
-            {% else %}is-valid
-            {% endif %}">
-                <label for="{{ inscricao.name }}">
-                    {{ inscricao.label }}
-                </label>
-                {{ inscricao }}
-            </div>
+            {% if forloop.last %}
+                {{  inscricao }}
+            {% else %}
+                <div class="form-group col-6">
+                    <label for="{{ inscricao.name }}">
+                        {{ inscricao.label }}
+                    </label>
+                    {% if inscricao.errors %}
+                        {{ inscricao|add_class:"is-invalid" }}
+                        <div class="invalid-feedback">
+                            {% for error in inscricao.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{  inscricao }}
+                    {% endif %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
     <button type="submit" class="btn btn-primary">Inscrever</button>
@@ -130,6 +159,27 @@
                         for (i in data){
                             text = text + '<option value="' + data[i].id + '">' + data[i].curso + '</option>'
                         }
+                        $('#id_curso').html(text)
+                        $("#curso_hidden").val(data[0].id)
+                    }
+                });
+            });
+
+            $("#id_curso").change(function(){
+                $("#curso_hidden").val($(this).val())
+            });
+
+            // Busca Curso Selecionado
+            $("#curso_hidden").ready(function(){
+                $.ajax({
+                    dataType: "json",
+                    url: 'get_curso/' + $("#curso_hidden").val(),
+                    method: "POST",
+                    data: {
+                        csrfmiddlewaretoken: csrftoken
+                    },
+                    success: function(data){
+                        text = '<option value="' + data[0].id + '">' + data[0].curso + '</option>'
                         $('#id_curso').html(text)
                     }
                 });

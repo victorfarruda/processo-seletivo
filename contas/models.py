@@ -45,11 +45,13 @@ class ManagerUsuario(BaseUserManager):
 class Usuario(AbstractBaseUser):
     nome      = models.CharField(max_length=120, blank=True, null=True)
     email     = models.CharField(max_length=120, unique=True)
+    perfil    = models.OneToOneField(Perfil, blank=True, null=True)
+    endereco  = models.OneToOneField(Endereco, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_admin  = models.BooleanField(default=False)
     is_staff  = models.BooleanField(default=False)
-    perfil    = models.OneToOneField(Perfil, blank=True, null=True)
-    endereco  = models.OneToOneField(Endereco, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated   = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
 
