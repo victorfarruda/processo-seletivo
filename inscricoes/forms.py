@@ -20,12 +20,22 @@ class InscricaoForm(forms.ModelForm):
 
 
 class MinhaInscricaoForm(forms.ModelForm):
-    cidade_curso = forms.CharField(label='Cidade', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    curso = forms.CharField(label='Curso', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    necessidade_esp = forms.CharField(label='Necessidade Especial',
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Necessidade Especial'}))
-    local_prova = forms.CharField(label='Local da Prova', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    cidade_curso = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Cidade',
+                                          widget=forms.Select(attrs={'class': 'form-control'}))
+    curso = forms.ModelChoiceField(empty_label='---------', queryset=Curso.objects.all(), label='Curso',
+                                   widget=forms.Select(attrs={'class': 'form-control'}))
+    necessidade_esp = forms.CharField(required=False, label='Necessidade Especial',
+                                      widget=forms.TextInput(
+                                          attrs={'class': 'form-control', 'placeholder': 'Necessidade Especial'}))
+    local_prova = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Local da Prova',
+                                         widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Inscricao
         exclude = ['candidato']
+
+    def __init__(self, *args, **kwargs):
+        super(MinhaInscricaoForm, self).__init__(*args, **kwargs)
+        self.fields['cidade_curso'].queryset = Cidade.objects.filter(id=self.instance.cidade_curso.id)
+        self.fields['curso'].queryset = Curso.objects.filter(id=self.instance.curso.id)
+        self.fields['local_prova'].queryset = Cidade.objects.filter(id=self.instance.local_prova.id)

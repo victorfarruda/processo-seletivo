@@ -50,8 +50,6 @@ def minha_inscricao(request):
     usuario = request.user
     inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
     inscricao_form = MinhaInscricaoForm(request.POST or None, instance=inscricao)
-    # if inscricao_form.is_valid():
-    #     inscricao_form.save()
     context = {
         'form_inscricao': inscricao_form,
     }
