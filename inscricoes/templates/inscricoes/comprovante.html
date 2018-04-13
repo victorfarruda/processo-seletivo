@@ -6,28 +6,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% include 'snippets/css.html' %}
         <title>Comprovante Inscrição - Processo Seletivo Universidade Aberta do Brasil (UAB)</title>
+        <style>
+            body {
+                height: 842px;
+                width: 595px;
+                /* to centre page on screen*/
+            }
+        </style>
     </head>
     <body>
-        <div class="navbar">
-            <div class="container">
+        <div>
+            <div class="navbar">
                 <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
-                <h1 class="display-4">Processo Seletivo - UAB</h1>
                 <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
             </div>
-        </div>
-        <div class="container">
+            <div>
+                <h1 class="text-center display-7">Processo Seletivo - UAB</h1>
+                <h3 class="text-center">Comprovante de Inscrição</h3>
+            </div>
+
             <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 col-md-offset-6">
-                    <h1>Comprovante de Matrícula</h1>
-                    <p>Nome completo: {{ request.user.nome }} {{ request.user.perfil.sobrenome }}</p>
-                    <p>RG: {{ request.user.perfil.rg }}</p>
-                    <p>CPF: {{ request.user.perfil.cpf }}</p>
-                    <p>Endereço: {{ request.user.endereco.rua }}{% if request.user.endereco.numero %},  {{ request.user.endereco.numero }}{% endif %}{% if request.user.endereco.numero %},  {{ request.user.endereco.bairro }}{% endif %}</p>
-                    <p>Cidade:  {{ request.user.endereco.cidade }}</p>
-                    <p>Curso Selecionado: {{ inscricao.curso.curso }}</p>
-                    <p>Cidade do Curso: {{ inscricao.cidade_curso.cidade }}</p>
-                    <p>Local da prova: {{ inscricao.local_prova.cidade }}</p>
+                <div class="col-md-2"></div>
+                <div>
+                    <p>Nome completo: {{ request.user.nome }} {{ request.user.perfil.sobrenome }}<br/>
+                    RG: {{ request.user.perfil.rg }}<br/>
+                    CPF: {{ request.user.perfil.cpf }}<br/>
+                    Endereço: {{ request.user.endereco.rua }}{% if request.user.endereco.numero %},  {{ request.user.endereco.numero }}{% endif %}{% if request.user.endereco.numero %},  {{ request.user.endereco.bairro }}{% endif %}<br/>
+                    Cidade:  {{ request.user.endereco.cidade }}<br/>
+                    Curso Selecionado: {{ inscricao.curso.curso }}<br/>
+                    Cidade do Curso: {{ inscricao.cidade_curso.cidade }}<br/>
+                    Local da prova: {{ inscricao.local_prova.cidade }}</p>
                 </div>
             </div>
             <div class="navbar">
@@ -35,5 +43,136 @@
                 <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
             </div>
         </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rasterizehtml/1.3.0/rasterizeHTML.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
+        <script>
+            /**
+             * html2pdf.js
+             * Copyright (c) 2014 Steven Spungin (TwelveTone LLC)  steven@twelvetone.tv
+             *
+             * Licensed under the MIT License.
+             * http://opensource.org/licenses/mit-license
+             */
+
+            function html2pdf (html,pdf,callback) {
+                var canvas = pdf.canvas;
+                if (!canvas) {
+                    alert('jsPDF canvas plugin not installed');
+                    return;
+                }
+                canvas.pdf = pdf;
+                pdf.annotations = {
+
+                    _nameMap : [],
+
+                    createAnnotation : function(href,bounds) {
+                        var x = pdf.context2d._wrapX(bounds.left);
+                        var y = pdf.context2d._wrapY(bounds.top);
+                        var page = pdf.context2d._page(bounds.top);
+                        var options;
+                        var index = href.indexOf('#');
+                        if (index >= 0) {
+                            options = {
+                                name : href.substring(index + 1)
+                            };
+                        } else {
+                            options = {
+                                url : href
+                            };
+                        }
+                        pdf.link(x, y, bounds.right - bounds.left, bounds.bottom - bounds.top, options);
+                    },
+
+                    setName : function(name,bounds) {
+                        var x = pdf.context2d._wrapX(bounds.left);
+                        var y = pdf.context2d._wrapY(bounds.top);
+                        var page = pdf.context2d._page(bounds.top);
+                        this._nameMap[name] = {
+                            page : page,
+                            x : x,
+                            y : y
+                        };
+                    }
+
+                };
+                canvas.annotations = pdf.annotations;
+
+                pdf.context2d._pageBreakAt = function(y) {
+                    this.pageBreaks.push(y);
+                };
+
+                pdf.context2d._gotoPage = function(pageOneBased) {
+                    while (pdf.internal.getNumberOfPages() < pageOneBased) {
+                        pdf.addPage();
+                    }
+                    pdf.setPage(pageOneBased);
+                }
+
+                if (typeof html === 'string') {
+                    // remove all scripts
+                    html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+
+                    var iframe = document.createElement('iframe');
+                    //iframe.style.width = canvas.width;
+                    //iframe.src = "";
+                    //iframe.document.domain =
+                    document.body.appendChild(iframe);
+                    var doc;
+                    doc = iframe.contentDocument;
+                    if (doc == undefined || doc == null) {
+                        doc = iframe.contentWindow.document;
+                    }
+                    //iframe.setAttribute('style', 'position:absolute;right:0; top:0; bottom:0; height:100%; width:500px');
+
+                    doc.open();
+                    doc.write(html);
+                    doc.close();
+
+                    var promise = html2canvas(doc.body, {
+                        canvas : canvas,
+                        onrendered : function(canvas) {
+                            if (callback) {
+                                if (iframe) {
+                                    iframe.parentElement.removeChild(iframe);
+                                }
+                                callback(pdf);
+                            }
+                        }
+                    });
+
+                } else {
+                    var body = html;
+                    var promise = html2canvas(body, {
+                        canvas : canvas,
+                        onrendered : function(canvas) {
+                            if (callback) {
+                                if (iframe) {
+                                    iframe.parentElement.removeChild(iframe);
+                                }
+                                callback(pdf);
+                            }
+                        }
+                    });
+                }
+
+            }
+
+        </script>
+        <script>
+            $(document).ready(function(){
+                var pdf = new jsPDF('p', 'pt', 'A4');
+                html2pdf(document.body, pdf, function(pdf){
+                    var iframe = document.createElement('iframe');
+                    iframe.setAttribute('style','position:absolute;right:0; top:0; bottom:0; height:100%; width:100%');
+                    document.body.appendChild(iframe);
+                    iframe.src = pdf.output('datauristring');
+                });
+            });
+        </script>
     </body>
 </html>
