@@ -8,14 +8,12 @@
         <title>Comprovante Inscrição - Processo Seletivo Universidade Aberta do Brasil (UAB)</title>
         <style>
             body {
-                height: 842px;
                 width: 595px;
-                /* to centre page on screen*/
             }
         </style>
     </head>
     <body>
-        <div>
+        <div class="content">
             <div class="navbar">
                 <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
                 <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
@@ -159,9 +157,7 @@
                         }
                     });
                 }
-
             }
-
         </script>
         <script>
             $(document).ready(function(){
@@ -170,6 +166,7 @@
                     var iframe = document.createElement('iframe');
                     iframe.setAttribute('style','position:absolute;right:0; top:0; bottom:0; height:100%; width:100%');
                     document.body.appendChild(iframe);
+                    $('.content').html('')
                     iframe.src = pdf.output('datauristring');
                 });
             });
