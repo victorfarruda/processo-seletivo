@@ -8,21 +8,32 @@
         <title>Comprovante Inscrição - Processo Seletivo Universidade Aberta do Brasil (UAB)</title>
     </head>
     <body>
-        <div class="navbar" style="background-color: #0d0f10;">
+        <div class="navbar">
             <div class="container">
-                <h1 class="display-4" style="color: #FFF;">Processo Seletivo - UAB</h1>
+                <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
+                <h1 class="display-4">Processo Seletivo - UAB</h1>
+                <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
             </div>
         </div>
         <div class="container">
-            <h1>Comprovante de Matrícula</h1>
-            <p>Nome completo: {{ request.user.nome }} {{ request.user.perfil.sobrenome }}</p>
-            <p>RG: {{ request.user.perfil.rg }}</p>
-            <p>CPF: {{ request.user.perfil.cpf }}</p>
-            <p>Endereço: {{ request.user.endereco.rua }}{% if request.user.endereco.numero %},  {{ request.user.endereco.numero }}{% endif %}{% if request.user.endereco.numero %},  {{ request.user.endereco.bairro }}{% endif %}</p>
-            <p>Cidade:  {{ request.user.endereco.cidade }}</p>
-            <p>Curso Selecionado: {{ inscricao.curso.curso }}</p>
-            <p>Cidade do Curso: {{ inscricao.cidade_curso.cidade }}</p>
-            <p>Local da prova: {{ inscricao.local_prova.cidade }}</p>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-md-offset-6">
+                    <h1>Comprovante de Matrícula</h1>
+                    <p>Nome completo: {{ request.user.nome }} {{ request.user.perfil.sobrenome }}</p>
+                    <p>RG: {{ request.user.perfil.rg }}</p>
+                    <p>CPF: {{ request.user.perfil.cpf }}</p>
+                    <p>Endereço: {{ request.user.endereco.rua }}{% if request.user.endereco.numero %},  {{ request.user.endereco.numero }}{% endif %}{% if request.user.endereco.numero %},  {{ request.user.endereco.bairro }}{% endif %}</p>
+                    <p>Cidade:  {{ request.user.endereco.cidade }}</p>
+                    <p>Curso Selecionado: {{ inscricao.curso.curso }}</p>
+                    <p>Cidade do Curso: {{ inscricao.cidade_curso.cidade }}</p>
+                    <p>Local da prova: {{ inscricao.local_prova.cidade }}</p>
+                </div>
+            </div>
+            <div class="navbar">
+                <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
+                <img src="{% url 'codigo_barras' text=inscricao.id %}" alt="Codigo de Barras valor {{ inscricao.id }}">
+            </div>
         </div>
     </body>
 </html>

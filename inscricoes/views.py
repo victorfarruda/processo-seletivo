@@ -2,6 +2,9 @@ from django.contrib.auth import login
 from django.http import request
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.http import HttpResponse
+
+from .utils import criar_codigo_barras
 
 from .forms import (
     InscricaoForm,
@@ -60,7 +63,14 @@ def minha_inscricao(request):
 def comprovante_inscricao(request):
     usuario = request.user
     inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
+
     context = {
         'inscricao': inscricao,
     }
     return render(request, 'inscricoes/comprovante.html', context)
+
+
+def codigo_barras(request, text):
+    codigo_barra = criar_codigo_barras(text)
+    binaryStuff = codigo_barra.asString('gif')
+    return HttpResponse(binaryStuff, 'image/gif')

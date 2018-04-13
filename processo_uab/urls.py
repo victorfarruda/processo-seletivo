@@ -20,7 +20,8 @@ from .views import inicio_page
 from inscricoes.views import (
     inscricao_page,
     minha_inscricao,
-    comprovante_inscricao
+    comprovante_inscricao,
+    codigo_barras
 )
 from contas.views import (
     login_page,
@@ -43,5 +44,6 @@ urlpatterns = [
     url(r'^inscricao/$', inscricao_page, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>\d+)$', get_cursos, name='cursos'),
     url(r'^inscricao/get_curso/(?P<id>\d+)$', get_curso, name='curso'),
+    url(r'^inscricao/codigo_barras/(?P<text>\w+)$', codigo_barras, name='codigo_barras'),
     url(r'^admin/', admin.site.urls),
 ]
