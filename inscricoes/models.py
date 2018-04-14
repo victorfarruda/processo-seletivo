@@ -6,6 +6,7 @@ from cursos.models import Curso
 from contas.models import Usuario
 
 from .choices import MODALIDADE_CHOICES
+from .choices import INSCRICAO_CHOICES
 
 
 class Inscricao(models.Model):
@@ -15,7 +16,8 @@ class Inscricao(models.Model):
     local_prova = models.ForeignKey(Cidade, related_name='local_prova')
     necessidade_esp = models.CharField(max_length=120, blank=True, null=True)
     modalidade = models.CharField(max_length=10, choices=MODALIDADE_CHOICES)
-    reserva = models.NullBooleanField(editable=False)
+    reserva = models.PositiveSmallIntegerField(editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
+    socio_economico = models.PositiveSmallIntegerField(editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -25,14 +27,14 @@ class Inscricao(models.Model):
 
 def post_save_reserva_receiver(sender, created, instance, *args, **kwargs):
     if created and instance.modalidade != 'universal':
-        instance.reserva = False
+        instance.reserva = 1  # Inscrito
         instance.save()
 
 
 post_save.connect(post_save_reserva_receiver, sender=Inscricao)
 
 
-class Socioeconomico(models.Model):
+class SocioEconomico(models.Model):
     inscricao = models.OneToOneField(Inscricao)
     pai = models.CharField(max_length=120, null=True)
     mae = models.CharField(max_length=120, null=True)
@@ -50,3 +52,13 @@ class Socioeconomico(models.Model):
     questa12 = models.CharField(max_length=10, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+
+def post_save_socio_economico_receiver(sender, created, instance, *args, **kwargs):
+    if created:
+        inscricao_socio = instance.inscricao
+        inscricao_socio.socio_economico = 1  # Inscrito
+        inscricao_socio.save()
+
+
+post_save.connect(post_save_socio_economico_receiver, sender=SocioEconomico)

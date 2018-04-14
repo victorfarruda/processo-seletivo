@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Inscricao
-from .models import Socioeconomico
+from .models import SocioEconomico
 
 admin.site.register(Inscricao)
-admin.site.register(Socioeconomico)
+admin.site.register(SocioEconomico)
