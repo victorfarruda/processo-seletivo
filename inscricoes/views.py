@@ -81,7 +81,7 @@ def codigo_barras(request, text):
 def socio_economico_inscricao(request):
     if request.user.inscricao.socio_economico != None:
         return redirect('inicio')
-    socio = SocioEconomicoForm(request.POST, None)
+    socio = SocioEconomicoForm(request.POST or None)
     if socio.is_valid():
         socio_obj = socio.save(commit=False)
         socio_obj.inscricao = request.user.inscricao

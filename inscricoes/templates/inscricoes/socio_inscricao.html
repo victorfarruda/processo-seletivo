@@ -31,10 +31,12 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <div class="invalid-feedback">
-                            {% for error in socio.errors %}
-                                {{ error }}
-                            {% endfor %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>
+                                {% for error in socio.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </strong>
                         </div>
                     {% else %}
                         {% for choice in socio %}
@@ -50,7 +52,7 @@
                     {% endif %}
                 {% else %}
                     {% if socio.errors %}
-                        {{ socio }}
+                        {{ socio|add_class:"is-invalid" }}
                         <div class="invalid-feedback">
                             {% for error in socio.errors %}
                                 {{ error }}

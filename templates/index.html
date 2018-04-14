@@ -4,5 +4,14 @@
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id feugiat nisi. Praesent sit amet purus pulvinar, suscipit risus eu, malesuada nibh. Praesent sagittis, ligula vitae facilisis laoreet, quam massa finibus libero, vitae molestie velit felis vel est. Vestibulum nec mauris hendrerit, vestibulum nisl at, eleifend massa. Nam fermentum faucibus laoreet. Etiam fringilla sagittis dignissim. Nam malesuada leo tortor, a tristique ligula consectetur quis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
     <p>Duis tempus quam nisi, in sagittis odio sodales non. Aliquam vel sem eu sem fermentum interdum id non ante. Duis malesuada id nibh tincidunt eleifend. Fusce sem tortor, hendrerit non mi at, accumsan volutpat lectus. Phasellus faucibus laoreet diam, sed rhoncus nisl rhoncus at. Sed semper, dolor et rhoncus facilisis, mauris mi vehicula nunc, at tincidunt justo erat in lectus. Integer hendrerit, nulla sit amet rutrum mollis, arcu nibh accumsan nisl, eget elementum arcu quam ut sapien. Fusce interdum aliquam mollis. Nam quis suscipit nibh. Nullam ut mi sem. Fusce congue mollis odio, sed sollicitudin metus rhoncus vitae.</p>
     <p>Maecenas sapien nunc, hendrerit quis feugiat accumsan, mattis non velit. Pellentesque interdum porttitor orci, eu ultricies urna efficitur vitae. Cras ut iaculis mauris. In sapien massa, rutrum et sapien in, eleifend viverra magna. Mauris id purus ac lectus malesuada commodo quis non leo. Cras a neque vitae orci accumsan posuere. Proin tempor fermentum nulla, nec eleifend turpis porta vulputate. Vestibulum placerat faucibus finibus. Pellentesque vulputate rutrum pharetra. Donec velit lacus, maximus ut finibus nec, auctor vitae orci. Maecenas et dolor nisl. Morbi id erat nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum sed nibh eu libero porta tempus lacinia feugiat sapien.</p>
-<a href="{% url 'inscricao' %}" class="btn btn-primary">Inscreva-se no Processo Seletivo</a>
+    {% if request.user.inscricao %}
+        <a href="" class="btn btn-primary">Você já está inscrito no Processo Seletivo</a>
+        {% if request.user.inscricao.socio_economico %}
+            <a href="" class="btn btn-success">Você está inscrito no Socioeconômico</a>
+        {% else %}
+            <a href="{% url 'socio_economico_inscricao' %}" class="btn btn-success">Inscrever no Socioeconômico</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'inscricao' %}" class="btn btn-primary">Inscreva-se no Processo Seletivo</a>
+    {% endif %}
 {% endblock %}
