@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth import get_user_model
 
 from .models import Perfil, Usuario
 
@@ -25,11 +24,12 @@ class PerfilForm(forms.ModelForm):
 
     def clean_rg(self):
         rg = self.cleaned_data.get('rg')
-        usuario = get_user_model()
-        if not usuario.is_admin:
-            raise forms.ValidationError("Você não pode editar este campo.")
         if rg is None:
             raise forms.ValidationError("O campo RG é obrigatório.")
+        if self.instance.id:
+            rg_antigo = Perfil.objects.get(id__exact=self.instance.id).rg
+            if not self.instance.usuario.is_admin and rg != rg_antigo:
+                raise forms.ValidationError("Você não tem permissão para editar este campo.")
         existe = Perfil.objects.filter(rg__iexact=rg).exclude(id__exact=self.instance.id).exists()
         if existe:
             raise forms.ValidationError("Este número de RG já foi utilizado.")
@@ -37,11 +37,12 @@ class PerfilForm(forms.ModelForm):
 
     def clean_cpf(self):
         cpf = self.cleaned_data.get('cpf')
-        usuario = get_user_model()
-        if not usuario.is_admin:
-            raise forms.ValidationError("Você não pode editar este campo.")
         if cpf is None:
             raise forms.ValidationError("O campo CPF é obrigatório.")
+        if self.instance.id:
+            cpf_antigo = Perfil.objects.get(id__exact=self.instance.id).cpf
+            if not self.instance.usuario.is_admin and cpf != cpf_antigo:
+                raise forms.ValidationError("Você não tem permissão para editar este campo.")
         existe = Perfil.objects.filter(cpf__iexact=cpf).exclude(id__exact=self.instance.id).exists()
         if existe:
             raise forms.ValidationError("Este número de CPF já foi utilizado.")

@@ -65,7 +65,6 @@ def minha_inscricao(request):
 def comprovante_inscricao(request):
     usuario = request.user
     inscricao = Inscricao.objects.get(candidato__exact=usuario.id)
-
     context = {
         'inscricao': inscricao,
     }
@@ -86,6 +85,7 @@ def socio_economico_inscricao(request):
         socio_obj = socio.save(commit=False)
         socio_obj.inscricao = request.user.inscricao
         socio_obj.save()
+        return redirect('inicio')
     context = {
         'socio_form': socio,
     }

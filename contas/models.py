@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.db.models.signals import post_save
 
 from enderecos.models import Endereco
 
@@ -17,6 +18,16 @@ class Perfil(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+def post_save_nome_receiver(sender, created, instance, *args, **kwargs):
+    if not created:
+        usuario = instance.usuario
+        usuario.nome = instance.nome
+        usuario.save()
+
+
+post_save.connect(post_save_nome_receiver, sender=Perfil)
 
 
 class ManagerUsuario(BaseUserManager):
@@ -41,6 +52,7 @@ class ManagerUsuario(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
+
 
 class Usuario(AbstractBaseUser):
     nome      = models.CharField(max_length=120, blank=True, null=True)

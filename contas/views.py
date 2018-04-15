@@ -5,9 +5,11 @@ from django.http import request
 from django.shortcuts import render
 from django.shortcuts import redirect
 
-from contas.forms import PerfilForm
 from enderecos.forms import EnderecoForm
-from .forms import LoginForm
+from .forms import (
+    LoginForm,
+    PerfilForm,
+)
 
 
 def login_page(request):
