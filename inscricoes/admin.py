@@ -10,12 +10,19 @@ from django.template.response import TemplateResponse
 
 from . import errors
 
-from .models import Inscricao
-from .models import SocioEconomico
+from .models import (
+    Inscricao,
+    SocioEconomico,
+    Recurso,
+)
 
-from .forms import InscricaoForm
+from .forms import (
+    InscricaoForm,
+    ReservaForm,
+)
 
 admin.site.register(SocioEconomico)
+admin.site.register(Recurso)
 
 
 @admin.register(Inscricao)
@@ -80,20 +87,70 @@ class InscricaoAdmin(admin.ModelAdmin):
     acoes_inscricao.allow_tags = True
 
     def reserva(self, request, id, *args, **kwargs):
-        return self.acao(
-            request=request,
-            inscricao_id=id,
-            form_acao=InscricaoForm,
-            acao_titulo='Reserva',
-        )
+        inscricao = self.get_object(request, id)
+        if inscricao.reserva is None:
+            raise Http404('Página não encontrada')
+
+        acao_titulo = 'Reserva de Vagas'
+        tipo = 'reserva'
+        recurso = Recurso.objects.filter(inscricao=inscricao.id, tipo__exact=tipo).first()
+        form = ReservaForm(request.POST or None, instance=recurso)
+
+        if request.method == 'POST':
+            if form.is_valid():
+                status = form.cleaned_data.get('status')
+                if status == '3':  # Indeferido
+                    form_obj = form.save(commit=False)
+                    form_obj.inscricao = inscricao
+                    form_obj.tipo = tipo
+                    form_obj.save()
+                    inscricao.reserva = 3  # Indeferido
+                    inscricao.save()
+                elif status == '2':  # Deferido
+                    inscricao.reserva = 2  # Indeferido
+                    inscricao.save()
+                    try:
+                        form.save()
+                    except:
+                        pass
+        context = self.admin_site.each_context(request)
+        context['opts'] = self.model._meta
+        context['form'] = form
+        context['title'] = acao_titulo
+        return TemplateResponse(request, 'admin/account/account_action.html', context)
 
     def socio(self, request, id, *args, **kwargs):
-        return self.acao(
-            request=request,
-            inscricao_id=id,
-            form_acao=InscricaoForm,
-            acao_titulo='Socioeconômico',
-        )
+        inscricao = self.get_object(request, id)
+        if inscricao.reserva is None:
+            raise Http404('Página não encontrada')
+
+        acao_titulo = 'Socioeconômico'
+        tipo = 'socio'
+        recurso = Recurso.objects.filter(inscricao=inscricao.id, tipo__exact=tipo).first()
+        form = ReservaForm(request.POST or None, instance=recurso)
+
+        if request.method == 'POST':
+            if form.is_valid():
+                status = form.cleaned_data.get('status')
+                if status == '3':  # Indeferido
+                    form_obj = form.save(commit=False)
+                    form_obj.inscricao = inscricao
+                    form_obj.tipo = tipo
+                    form_obj.save()
+                    inscricao.socio_economico = 3  # Indeferido
+                    inscricao.save()
+                elif status == '2':  # Deferido
+                    inscricao.socio_economico = 2  # Indeferido
+                    inscricao.save()
+                    try:
+                        form.save()
+                    except:
+                        pass
+        context = self.admin_site.each_context(request)
+        context['opts'] = self.model._meta
+        context['form'] = form
+        context['title'] = acao_titulo
+        return TemplateResponse(request, 'admin/account/account_action.html', context)
 
     def acao(
             self,
@@ -101,31 +158,29 @@ class InscricaoAdmin(admin.ModelAdmin):
             inscricao_id,
             form_acao,
             acao_titulo,
+            tipo,
     ):
         inscricao = self.get_object(request, inscricao_id)
-        if inscricao.reserva is None and acao_titulo == 'Reserva':
+        if inscricao.reserva is None and tipo == 'reserva':
             raise Http404('Página não encontrada')
-        if inscricao.socio_economico is None and acao_titulo == 'Socioeconômico':
+
+        if inscricao.socio_economico is None and tipo == 'socio':
             raise Http404('Página não encontrada')
-        if request.method != 'POST':
-            form = form_acao()
-        else:
-            form = form_acao(request.POST)
+
+        recurso = Recurso.objects.filter(inscricao=inscricao.id).first()
+        form = form_acao(request.POST or None, instance=recurso)
+        if request.method == 'POST':
             if form.is_valid():
-                try:
-                    form.save(inscricao, request.user)
-                except errors.Error as e:
-                    # If save() raised, the form will a have a non
-                    # field error containing an informative message.
+                status = form.cleaned_data.get('status')
+                if status == '3':  # Indeferido
+                    form_obj = form.save(commit=False)
+                    form_obj.inscricao = inscricao
+                    form_obj.tipo = tipo
+                    form_obj.save()
+                    inscricao.reserva = 3  # Indeferido
+                    inscricao.save()
+                elif status == '2':  # Deferido
                     pass
-                else:
-                    self.message_user(request, 'Success')
-                    url = reverse(
-                        'admin:account_account_change',
-                        args=[inscricao.pk],
-                        current_app=self.admin_site.name,
-                    )
-                    return HttpResponseRedirect(url)
         context = self.admin_site.each_context(request)
         context['opts'] = self.model._meta
         context['form'] = form

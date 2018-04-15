@@ -3,9 +3,12 @@ from django import forms
 from .models import (
     Inscricao,
     SocioEconomico,
+    Recurso,
 )
 from .choices import (
+    INSCRICAO_CHOICES,
     MODALIDADE_CHOICES,
+    RECURSO_CHOICES,
     QUESTAO_01,
     QUESTAO_02,
     QUESTAO_03,
@@ -22,8 +25,6 @@ from .choices import (
 
 from cidades.models import Cidade
 from cursos.models import Curso
-
-from . import errors
 
 
 class InscricaoForm(forms.ModelForm):
@@ -86,3 +87,22 @@ class SocioEconomicoForm(forms.ModelForm):
     class Meta:
         model = SocioEconomico
         exclude = ['inscricao']
+
+
+class ReservaForm(forms.ModelForm):
+    status = forms.ChoiceField(label='Selecione:', widget=forms.RadioSelect(), choices=RECURSO_CHOICES)
+    motivo_indeferimento = forms.CharField(label='Informe o motivo do Indeferimento:', widget=forms.Textarea(), required=False)
+
+    class Meta:
+        model = Recurso
+        fields = ['status', 'motivo_indeferimento', ]
+
+    def clean_motivo_indeferimento(self):
+        status = self.cleaned_data.get('status')
+        motivo_indeferimento = self.cleaned_data.get('motivo_indeferimento')
+        if status == '2':  # Deferido
+            return motivo_indeferimento
+        if status == '3':  # Indeferido
+            if motivo_indeferimento == '':
+                raise forms.ValidationError('Este campo não pode ser vazio.')
+        return motivo_indeferimento

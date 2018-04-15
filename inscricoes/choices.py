@@ -6,9 +6,19 @@ MODALIDADE_CHOICES = (
 )
 
 INSCRICAO_CHOICES = (
-    (1, 'Inscrito'),
-    (2, 'Deferido'),
-    (3, 'Indeferido'),
+    ('1', 'Inscrito'),
+    ('2', 'Deferido'),
+    ('3', 'Indeferido'),
+)
+
+TIPO_RECURSO = (
+    ('reserva', 'Reserva de Vagas'),
+    ('socio', 'Socioeconômico'),
+)
+
+RECURSO_CHOICES = (
+    ('2', 'Deferido'),
+    ('3', 'Indeferido'),
 )
 
 QUESTAO_01 = (

@@ -5,8 +5,12 @@ from cidades.models import Cidade
 from cursos.models import Curso
 from contas.models import Usuario
 
-from .choices import MODALIDADE_CHOICES
-from .choices import INSCRICAO_CHOICES
+from .choices import (
+    MODALIDADE_CHOICES,
+    INSCRICAO_CHOICES,
+    RECURSO_CHOICES,
+    TIPO_RECURSO,
+)
 
 
 class Inscricao(models.Model):
@@ -16,8 +20,8 @@ class Inscricao(models.Model):
     local_prova = models.ForeignKey(Cidade, related_name='local_prova')
     necessidade_esp = models.CharField(max_length=120, blank=True, null=True)
     modalidade = models.CharField(max_length=10, choices=MODALIDADE_CHOICES)
-    reserva = models.PositiveSmallIntegerField(editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
-    socio_economico = models.PositiveSmallIntegerField(editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
+    reserva = models.CharField(max_length=2, editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
+    socio_economico = models.CharField(max_length=2, editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -27,7 +31,7 @@ class Inscricao(models.Model):
 
 def post_save_reserva_receiver(sender, created, instance, *args, **kwargs):
     if created and instance.modalidade != 'universal':
-        instance.reserva = 1  # Inscrito
+        instance.reserva = '1'  # Inscrito
         instance.save()
 
 
@@ -56,11 +60,23 @@ class SocioEconomico(models.Model):
     def __str__(self):
         return "{} {}".format(self.inscricao.candidato.perfil.nome, self.inscricao.candidato.perfil.sobrenome)
 
+
 def post_save_socio_economico_receiver(sender, created, instance, *args, **kwargs):
     if created:
         inscricao_socio = instance.inscricao
-        inscricao_socio.socio_economico = 1  # Inscrito
+        inscricao_socio.socio_economico = '1'  # Inscrito
         inscricao_socio.save()
 
 
 post_save.connect(post_save_socio_economico_receiver, sender=SocioEconomico)
+
+
+class Recurso(models.Model):
+    inscricao = models.ForeignKey(Inscricao)
+    status = models.CharField(max_length=120, choices=RECURSO_CHOICES)
+    motivo_indeferimento = models.TextField()
+    recurso = models.TextField(blank=True, null=True)
+    resposta_recurso = models.TextField(blank=True, null=True)
+    tipo = models.CharField(max_length=120, choices=TIPO_RECURSO)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
