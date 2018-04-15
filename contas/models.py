@@ -69,8 +69,10 @@ class Usuario(AbstractBaseUser):
 
     objects = ManagerUsuario()
 
-    # def __str__(self):
-    #     return self.nome
+    def __str__(self):
+        if self.perfil is None:
+            return self.email
+        return "{} {}".format(self.perfil.nome, self.perfil.sobrenome)
 
     def get_short_name(self):
         return self.nome

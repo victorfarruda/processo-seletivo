@@ -23,6 +23,8 @@ from .choices import (
 from cidades.models import Cidade
 from cursos.models import Curso
 
+from . import errors
+
 
 class InscricaoForm(forms.ModelForm):
     cidade_curso = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Cidade', widget=forms.Select(attrs={'class': 'form-control'}))

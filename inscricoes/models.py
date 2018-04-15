@@ -22,7 +22,7 @@ class Inscricao(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.candidato.email
+        return "{} {}".format(self.candidato.perfil.nome, self.candidato.perfil.sobrenome)
 
 
 def post_save_reserva_receiver(sender, created, instance, *args, **kwargs):
@@ -53,6 +53,8 @@ class SocioEconomico(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return "{} {}".format(self.inscricao.candidato.perfil.nome, self.inscricao.candidato.perfil.sobrenome)
 
 def post_save_socio_economico_receiver(sender, created, instance, *args, **kwargs):
     if created:
