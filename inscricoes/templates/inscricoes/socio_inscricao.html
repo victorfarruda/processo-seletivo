@@ -5,34 +5,40 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <h1>Dados Pessoais</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Dados Pessoais</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for socio in socio_form %}
             {% if forloop.counter == 3 %}
                 </div>
-                <h1>Questionários de Avaliação</h1>
-                <hr/>
-                <div class="form-row">
+                <br/>
+                <header>
+                    <h2>Questionários de Avaliação</h2>
+                    <hr/>
+                </header>
+                <div class="row">
             {% endif %}
-            <div class="form-group col-12">
+            <div class="form-group col-12 12u">
                 <label for="{{ socio.name }}">
                     {{ socio.label }}
                 </label>
                 {% if forloop.counter > 2 %}
                     {% if socio.errors %}
                         {% for choice in socio %}
-                            <div class="col-12">
-                                <div class="form-check">
-                                    {{ choice.tag }}
-                                    <label class="form-check-label" for="{{ choice.data.name }}">
-                                        {{ choice.data.label }}
-                                    </label>
-                                </div>
-                            </div>
+                            {{ choice }}
+                            <!--<div class="col-12 12u">-->
+                                <!--<div class="form-check">-->
+                                    <!--{{ choice.tag }}-->
+                                    <!--<label class="form-check-label" for="{{ choice.data.name }}">-->
+                                        <!--{{ choice.data.label }}-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         {% endfor %}
                         <div class="alert alert-danger" role="alert">
-                            <strong>
+                            <strong style="color:red;">
                                 {% for error in socio.errors %}
                                     {{ error }}
                                 {% endfor %}
@@ -40,20 +46,21 @@
                         </div>
                     {% else %}
                         {% for choice in socio %}
-                            <div class="col-12">
-                                <div class="form-check">
-                                    {{ choice.tag }}
-                                    <label class="form-check-label" for="{{ choice.data.name }}">
-                                        {{ choice.data.label }}
-                                    </label>
-                                </div>
-                            </div>
+                            {{ choice }}
+                            <!--<div class="col-12 12u">-->
+                                <!--<div class="form-check">-->
+                                    <!--{{ choice.tag }}-->
+                                    <!--<label class="form-check-label" for="{{ choice.data.name }}">-->
+                                        <!--{{ choice.data.label }}-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         {% endfor %}
                     {% endif %}
                 {% else %}
                     {% if socio.errors %}
                         {{ socio|add_class:"is-invalid" }}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" style="color:red;">
                             {% for error in socio.errors %}
                                 {{ error }}
                             {% endfor %}
@@ -65,6 +72,6 @@
             </div>
         {% endfor %}
     </div>
-    <button type="submit" class="btn btn-primary">Inscrever no Socioeconômico</button>
+    <button type="submit" class="btn btn-primary button">Inscrever no Socioeconômico</button>
 </form>
 {% endblock %}
