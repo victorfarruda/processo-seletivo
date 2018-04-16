@@ -3,22 +3,27 @@
 {% load widget_tweaks %}
 
 {% block content %}
+
+
+
 <form method="POST">
     {% csrf_token %}
-    <h1>Informações Pessoais</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Informações Pessoais</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for perfil in form_perfil %}
             <div class="form-group
-            {% if forloop.counter == 2 %}col-6
-            {% elif forloop.counter == 3 %}col-2
-            {% else %}col-4{% endif %}">
+            {% if forloop.counter == 2 %}col-6 6u
+            {% elif forloop.counter == 3 %}col-2 2u
+            {% else %}col-4 4u{% endif %}">
                 <label for="{{ perfil.name }}">
                     {{ perfil.label }}
                 </label>
                 {% if perfil.errors %}
                     {{ perfil|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in perfil.errors %}
                             {{ error }}
                         {% endfor %}
@@ -29,13 +34,13 @@
             </div>
         {% endfor %}
         {% for usuario in form_usuario %}
-            <div class="form-group col-4">
+            <div class="form-group col-4 4u">
                 <label for="{{ usuario.name }}">
                     {{ usuario.label }}
                 </label>
                 {% if usuario.errors %}
                     {{ usuario|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in usuario.errors %}
                             {{ error }}
                         {% endfor %}
@@ -46,20 +51,22 @@
             </div>
         {% endfor %}
     </div>
-    <h1>Endereço</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Endereço</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for endereco in form_endereco %}
             <div class="form-group
-                {% if forloop.counter == 2 %}col-6
-                {% elif forloop.counter == 3 %}col-2
-                {% else %}col-4{% endif %}">
+                {% if forloop.counter == 2 %}col-6 6u
+                {% elif forloop.counter == 3 %}col-2 2u
+                {% else %}col-4 4u{% endif %}">
                 <label for="{{ endereco.name }}">
                     {{ endereco.label }}
                 </label>
                 {% if endereco.errors %}
                     {{ endereco|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in endereco.errors %}
                             {{ error }}
                         {% endfor %}
@@ -70,20 +77,22 @@
             </div>
         {% endfor %}
     </div>
-    <h1>Inscrição</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Inscrição</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for inscricao in form_inscricao %}
             {% if forloop.last %}
                 {{  inscricao }}
             {% else %}
-                <div class="form-group col-6">
+                <div class="form-group col-6 6u">
                     <label for="{{ inscricao.name }}">
                         {{ inscricao.label }}
                     </label>
                     {% if inscricao.errors %}
                         {{ inscricao|add_class:"is-invalid" }}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback" style="color:red;">
                             {% for error in inscricao.errors %}
                                 {{ error }}
                             {% endfor %}
@@ -95,7 +104,7 @@
             {% endif %}
         {% endfor %}
     </div>
-    <button type="submit" class="btn btn-primary">Inscrever</button>
+    <button type="submit" class="btn btn-primary button">Inscrever</button>
 </form>
 {% endblock %}
 

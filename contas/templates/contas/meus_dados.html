@@ -5,14 +5,16 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <h1>Informações Pessoais</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Informações Pessoais</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for perfil in form_perfil %}
             <div class="form-group
-            {% if forloop.counter == 2 %}col-6
-            {% elif forloop.counter == 3 %}col-2
-            {% else %}col-4{% endif %}">
+            {% if forloop.counter == 2 %}col-6 6u
+            {% elif forloop.counter == 3 %}col-2 2u
+            {% else %}col-4 4u{% endif %}">
                 <label for="{{ perfil.name }}">
                     {{ perfil.label }}
                 </label>
@@ -22,7 +24,7 @@
                     {% else %}
                         {{ perfil|add_class:"is-invalid" }}
                     {% endif %}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in perfil.errors %}
                             {{ error }}
                         {% endfor %}
@@ -37,20 +39,22 @@
             </div>
         {% endfor %}
     </div>
-    <h1>Endereço</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Endereço</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for endereco in form_endereco %}
             <div class="form-group
-                {% if forloop.counter == 2 %}col-6
-                {% elif forloop.counter == 3 %}col-2
-                {% else %}col-4{% endif %}">
+                {% if forloop.counter == 2 %}col-6 6u
+                {% elif forloop.counter == 3 %}col-2 2u
+                {% else %}col-4 4u{% endif %}">
                 <label for="{{ endereco.name }}">
                     {{ endereco.label }}
                 </label>
                 {% if endereco.errors %}
                     {{ endereco|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in endereco.errors %}
                             {{ error }}
                         {% endfor %}
@@ -61,7 +65,7 @@
             </div>
         {% endfor %}
     </div>
-    <button type="submit" class="btn btn-primary">Alterar Dados</button>
+    <button type="submit" class="btn btn-primary button">Alterar Dados</button>
 </form>
 {% endblock %}
 

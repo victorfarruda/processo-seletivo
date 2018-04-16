@@ -5,17 +5,19 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <h1>Minha Inscrição</h1>
-    <hr/>
-    <div class="form-row">
+    <header>
+        <h2>Minha Inscrição</h2>
+        <hr/>
+    </header>
+    <div class="row">
         {% for inscricao in form_inscricao %}
-            <div class="form-group col-6">
+            <div class="form-group col-6 6u">
                 <label for="{{ inscricao.name }}">
                     {{ inscricao.label }}
                 </label>
                 {% if inscricao.errors %}
                     {{ inscricao|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in inscricao.errors %}
                             {{ error }}
                         {% endfor %}

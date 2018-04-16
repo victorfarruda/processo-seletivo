@@ -31,7 +31,7 @@ class InscricaoForm(forms.ModelForm):
     cidade_curso = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Cidade', widget=forms.Select(attrs={'class': 'form-control'}))
     curso = forms.ModelChoiceField(empty_label='---------',queryset=Curso.objects.all(), label='Curso', widget=forms.Select(attrs={'class': 'form-control'}))
     necessidade_esp = forms.CharField(required=False, label='Necessidade Especial',
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Necessidade Especial'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control text', 'placeholder': 'Necessidade Especial'}))
     local_prova = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Local da Prova', widget=forms.Select(attrs={'class': 'form-control'}))
     modalidade = forms.ChoiceField(choices=MODALIDADE_CHOICES, label='Modalidade',
                                         widget=forms.Select(attrs={'class': 'form-control'}))
@@ -39,25 +39,25 @@ class InscricaoForm(forms.ModelForm):
 
     class Meta:
         model = Inscricao
-        exclude = ['candidato']
+        exclude = ['candidato', 'valor']
 
 
 class MinhaInscricaoForm(forms.ModelForm):
     cidade_curso = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Cidade',
-                                          widget=forms.Select(attrs={'class': 'form-control'}))
+                                          widget=forms.Select(attrs={'class': 'form-control text'}))
     curso = forms.ModelChoiceField(empty_label='---------', queryset=Curso.objects.all(), label='Curso',
-                                   widget=forms.Select(attrs={'class': 'form-control'}))
+                                   widget=forms.Select(attrs={'class': 'form-control text'}))
     necessidade_esp = forms.CharField(required=False, label='Necessidade Especial',
                                       widget=forms.TextInput(
-                                          attrs={'class': 'form-control', 'placeholder': 'Necessidade Especial'}))
+                                          attrs={'class': 'form-control text', 'placeholder': 'Necessidade Especial'}))
     local_prova = forms.ModelChoiceField(queryset=Cidade.objects.all(), label='Local da Prova',
-                                         widget=forms.Select(attrs={'class': 'form-control'}))
+                                         widget=forms.Select(attrs={'class': 'form-control text'}))
     modalidade = forms.ChoiceField(label='Modalidade',
-                                        widget=forms.Select(attrs={'class': 'form-control'}))
+                                        widget=forms.Select(attrs={'class': 'form-control text'}))
 
     class Meta:
         model = Inscricao
-        exclude = ['candidato']
+        exclude = ['candidato', 'valor']
 
     def __init__(self, *args, **kwargs):
         super(MinhaInscricaoForm, self).__init__(*args, **kwargs)
@@ -69,8 +69,8 @@ class MinhaInscricaoForm(forms.ModelForm):
 
 
 class SocioEconomicoForm(forms.ModelForm):
-    pai = forms.CharField(label='Nome do Pai', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    mae = forms.CharField(label='Nome da Mãe', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    pai = forms.CharField(label='Nome do Pai', widget=forms.TextInput(attrs={'class': 'text'}))
+    mae = forms.CharField(label='Nome da Mãe', widget=forms.TextInput(attrs={'class': 'text'}))
     questao1 = forms.ChoiceField(label='01 - Renda familiar per capta:', widget=forms.RadioSelect(attrs={'class': 'form-check-input'}), choices=QUESTAO_01)
     questao2 = forms.ChoiceField(label='02 - Escola em que cursou o Ensino Médio:', widget=forms.RadioSelect(attrs={'class': 'form-check-input'}), choices=QUESTAO_02)
     questao3 = forms.ChoiceField(label='03 - Escola em que fez integralmente o ensino fundamental:', widget=forms.RadioSelect(attrs={'class': 'form-check-input'}), choices=QUESTAO_03)

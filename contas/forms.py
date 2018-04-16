@@ -4,15 +4,15 @@ from .models import Perfil, Usuario
 
 
 class PerfilForm(forms.ModelForm):
-    nome = forms.CharField(label='Nome', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome'}))
-    sobrenome = forms.CharField(label='Sobrenome', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sobrenome'}))
+    nome = forms.CharField(label='Nome', widget=forms.TextInput(attrs={'class': 'form-control text', 'placeholder': 'Nome'}))
+    sobrenome = forms.CharField(label='Sobrenome', widget=forms.TextInput(attrs={'class': 'form-control text', 'placeholder': 'Sobrenome'}))
     data_nasc = forms.DateField(input_formats=['%d/%m/%Y'], label='Data de Nascimento',
                                 widget=forms.DateInput(
-                                    attrs={'class': 'form-control data', 'placeholder': 'Data de Nascimento'}))
+                                    attrs={'class': 'form-control text data', 'placeholder': 'Data de Nascimento'}))
     telefone = forms.CharField(label='Telefone',
-                             widget=forms.TextInput(attrs={'class': 'form-control celular', 'placeholder': 'Telefone'}))
-    rg = forms.CharField(label='RG', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'RG'}))
-    cpf = forms.CharField(label='CPF', widget=forms.TextInput(attrs={'class': 'form-control cpf', 'placeholder': 'CPF'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control text celular', 'placeholder': 'Telefone'}))
+    rg = forms.CharField(label='RG', widget=forms.TextInput(attrs={'class': 'form-control text', 'placeholder': 'RG'}))
+    cpf = forms.CharField(label='CPF', widget=forms.TextInput(attrs={'class': 'form-control text cpf', 'placeholder': 'CPF'}))
 
     class Meta:
         model = Perfil
@@ -51,10 +51,10 @@ class PerfilForm(forms.ModelForm):
 
 class UsuarioForm(forms.ModelForm):
     email = forms.EmailField(label='E-mail',
-                             widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+                             widget=forms.EmailInput(attrs={'class': 'form-control text', 'placeholder': 'E-mail'}))
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control text', 'placeholder': 'Senha'}))
     password_confirm = forms.CharField(label='Confirme Senha',
-                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirme Senha'}))
+                               widget=forms.PasswordInput(attrs={'class': 'form-control text', 'placeholder': 'Confirme Senha'}))
 
     class Meta:
         model = Usuario
@@ -81,8 +81,8 @@ class UsuarioForm(forms.ModelForm):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label='E-mail',
-                             widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'E-mail'}))
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Senha'}))
+                             widget=forms.EmailInput(attrs={'class': 'form-control text', 'placeholder': 'E-mail'}))
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control text', 'placeholder': 'Senha'}))
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
