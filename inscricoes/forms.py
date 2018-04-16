@@ -6,7 +6,7 @@ from .models import (
     Recurso,
 )
 from .choices import (
-    INSCRICAO_CHOICES,
+    INSCRICAO_VALOR,
     MODALIDADE_CHOICES,
     RECURSO_CHOICES,
     QUESTAO_01,
@@ -90,12 +90,13 @@ class SocioEconomicoForm(forms.ModelForm):
 
 
 class ReservaForm(forms.ModelForm):
-    status = forms.ChoiceField(label='Selecione:', widget=forms.RadioSelect(), choices=RECURSO_CHOICES)
-    motivo_indeferimento = forms.CharField(label='Informe o motivo do Indeferimento:', widget=forms.Textarea(), required=False)
+    status = forms.ChoiceField(label='Selecione:', widget=forms.RadioSelect(attrs={'class': 'status'}), choices=RECURSO_CHOICES)
+    motivo_indeferimento = forms.CharField(label='Informe o motivo do Indeferimento:', widget=forms.Textarea(attrs={'class': 'motivo'}), required=False)
+    valor = forms.ChoiceField(label='Informe o valor da Inscrição:', widget=forms.RadioSelect(attrs={'class': 'valor'}), choices=INSCRICAO_VALOR, required=False)
 
     class Meta:
         model = Recurso
-        fields = ['status', 'motivo_indeferimento', ]
+        fields = ['status', 'motivo_indeferimento', 'valor']
 
     def clean_motivo_indeferimento(self):
         status = self.cleaned_data.get('status')

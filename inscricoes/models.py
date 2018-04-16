@@ -22,6 +22,7 @@ class Inscricao(models.Model):
     modalidade = models.CharField(max_length=10, choices=MODALIDADE_CHOICES)
     reserva = models.CharField(max_length=2, editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
     socio_economico = models.CharField(max_length=2, editable=False, choices=INSCRICAO_CHOICES, null=True, blank=True)
+    valor = models.CharField(max_length=6, default='100,00')
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -80,3 +81,6 @@ class Recurso(models.Model):
     tipo = models.CharField(max_length=120, choices=TIPO_RECURSO)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "{} {}".format(self.inscricao.candidato.perfil.nome, self.inscricao.candidato.perfil.sobrenome)

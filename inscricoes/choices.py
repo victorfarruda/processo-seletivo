@@ -11,6 +11,13 @@ INSCRICAO_CHOICES = (
     ('3', 'Indeferido'),
 )
 
+INSCRICAO_VALOR = (
+    ('100,00', 'R$ 100,00'),
+    ('42,00', 'R$ 42,00'),
+    ('27,00', 'R$ 27,00'),
+    ('00,00', 'R$ 00,00'),
+)
+
 TIPO_RECURSO = (
     ('reserva', 'Reserva de Vagas'),
     ('socio', 'Socioeconômico'),
