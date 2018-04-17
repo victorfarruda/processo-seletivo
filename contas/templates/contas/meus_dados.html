@@ -8,6 +8,7 @@
     <header>
         <h2>Informações Pessoais</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for perfil in form_perfil %}
@@ -24,16 +25,16 @@
                     {% else %}
                         {{ perfil|add_class:"is-invalid" }}
                     {% endif %}
-                    <div class="invalid-feedback" style="color:red;">
+                    <div class="invalid-feedback">
                         {% for error in perfil.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
                     {% if perfil.name == 'rg' or perfil.name == 'cpf' %}
-                        {{ perfil|attr:"readonly" }}
+                        {{ perfil|add_class:'mb'|attr:"readonly" }}
                     {% else %}
-                        {{ perfil }}
+                        {{ perfil|add_class:'mb' }}
                     {% endif %}
                 {% endif %}
             </div>
@@ -42,6 +43,7 @@
     <header>
         <h2>Endereço</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for endereco in form_endereco %}
@@ -54,13 +56,13 @@
                 </label>
                 {% if endereco.errors %}
                     {{ endereco|add_class:"is-invalid" }}
-                    <div class="invalid-feedback" style="color:red;">
+                    <div class="invalid-feedback">
                         {% for error in endereco.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{  endereco }}
+                    {{  endereco|add_class:'mb' }}
                 {% endif %}
             </div>
         {% endfor %}

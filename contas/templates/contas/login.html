@@ -9,6 +9,7 @@
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
+  text-align: center;
 }
 .form-signin .checkbox {
   font-weight: 400;
@@ -44,7 +45,7 @@
             {% for campo in login %}
                 {% if campo.errors %}
                     {{ campo|add_class:"is-invalid" }}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback" style="color:red;">
                         {% for error in campo.errors %}
                             {{ error }}
                         {% endfor %}

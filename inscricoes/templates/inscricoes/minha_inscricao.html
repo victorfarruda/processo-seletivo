@@ -8,6 +8,7 @@
     <header>
         <h2>Minha Inscrição</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for inscricao in form_inscricao %}
@@ -23,7 +24,7 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{  inscricao|attr:"readonly" }}
+                    {{  inscricao|add_class:'mb'|attr:"readonly" }}
                 {% endif %}
             </div>
         {% endfor %}

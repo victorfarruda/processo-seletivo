@@ -1,5 +1,5 @@
 @charset 'UTF-8';
-@import url('http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700');
 @import url('font-awesome.min.css');
 
 /*
@@ -381,7 +381,9 @@
 			form select,
 			form textarea
 			{
+			/*
 				-webkit-appearance: none;
+			*/
 				display: block;
 				width: 100%;
 				padding: 1em;
@@ -406,7 +408,7 @@
 				form input,
 				form select
 				{
-					line-height: 1em;
+					line-height: 1.5em;
 				}
 				
 				form textarea
@@ -416,27 +418,27 @@
 
 				form .formerize-placeholder
 				{
-					color: #555 !important;
+					color: #7a8186 !important;
 				}
 
 				form ::-webkit-input-placeholder
 				{
-					color: #555 !important;
+					color: #7a8186 !important;
 				}
 
 				form :-moz-placeholder
 				{
-					color: #555 !important;
+					color: #7a8186 !important;
 				}
 
 				form ::-moz-placeholder
 				{
-					color: #555 !important;
+					color: #7a8186 !important;
 				}
 
 				form :-ms-input-placeholder
 				{
-					color: #555 !important;
+					color: #7a8186 !important;
 				}
 
 				form ::-moz-focus-inner

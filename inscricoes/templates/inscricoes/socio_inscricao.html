@@ -8,6 +8,7 @@
     <header>
         <h2>Dados Pessoais</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for socio in socio_form %}
@@ -17,10 +18,11 @@
                 <header>
                     <h2>Questionários de Avaliação</h2>
                     <hr/>
+                    <br/>
                 </header>
                 <div class="row">
             {% endif %}
-            <div class="form-group col-12 12u">
+            <div class="form-group col-12 12u mb">
                 <label for="{{ socio.name }}">
                     {{ socio.label }}
                 </label>

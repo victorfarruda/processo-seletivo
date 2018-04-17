@@ -11,6 +11,7 @@
     <header>
         <h2>Informações Pessoais</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for perfil in form_perfil %}
@@ -23,13 +24,13 @@
                 </label>
                 {% if perfil.errors %}
                     {{ perfil|add_class:"is-invalid" }}
-                    <div class="invalid-feedback" style="color:red;">
+                    <div class="invalid-feedback">
                         {% for error in perfil.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{  perfil }}
+                    {{  perfil|add_class:'mb' }}
                 {% endif %}
             </div>
         {% endfor %}
@@ -40,13 +41,13 @@
                 </label>
                 {% if usuario.errors %}
                     {{ usuario|add_class:"is-invalid" }}
-                    <div class="invalid-feedback" style="color:red;">
+                    <div class="invalid-feedback">
                         {% for error in usuario.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{  usuario }}
+                    {{  usuario|add_class:'mb' }}
                 {% endif %}
             </div>
         {% endfor %}
@@ -54,6 +55,7 @@
     <header>
         <h2>Endereço</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for endereco in form_endereco %}
@@ -66,13 +68,13 @@
                 </label>
                 {% if endereco.errors %}
                     {{ endereco|add_class:"is-invalid" }}
-                    <div class="invalid-feedback" style="color:red;">
+                    <div class="invalid-feedback">
                         {% for error in endereco.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{  endereco }}
+                    {{  endereco|add_class:'mb' }}
                 {% endif %}
             </div>
         {% endfor %}
@@ -80,6 +82,7 @@
     <header>
         <h2>Inscrição</h2>
         <hr/>
+        <br/>
     </header>
     <div class="row">
         {% for inscricao in form_inscricao %}
@@ -92,13 +95,13 @@
                     </label>
                     {% if inscricao.errors %}
                         {{ inscricao|add_class:"is-invalid" }}
-                        <div class="invalid-feedback" style="color:red;">
+                        <div class="invalid-feedback">
                             {% for error in inscricao.errors %}
                                 {{ error }}
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{  inscricao }}
+                        {{  inscricao|add_class:'mb' }}
                     {% endif %}
                 </div>
             {% endif %}
