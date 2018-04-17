@@ -22,7 +22,7 @@
 					<!-- Logo -->
 						<div id="logo">
 							<div>
-								<h1><a href="#">Processo Seletivo - UAB</a></h1>
+								<h1><a href="{{ inicio_url }}">Processo Seletivo - UAB</a></h1>
 								<span></span>
 							</div>
 						</div>
@@ -72,6 +72,7 @@
                                 {% endif %}
 							</ul>
 						</nav>
+
 				</div>
 			</div>
 
@@ -157,6 +158,12 @@
 			}
 			.is-invalid {
 				border: 1px solid red !important;
+			}
+			form select {
+				-webkit-appearance:menulist !important;
+			}
+			form input, form select {
+				line-height: 1.5em;
 			}
 		</style>
 	</body>
