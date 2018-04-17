@@ -1,11 +1,17 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import login
-from django.contrib.auth import logout
-from django.http import request
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout,
+)
+from django.http import (
+    request,
+    Http404,
+)
 from django.shortcuts import render
 from django.shortcuts import redirect
 
 from enderecos.forms import EnderecoForm
+from inscricoes.forms import RecursoForm
 from .forms import (
     LoginForm,
     PerfilForm,
@@ -48,3 +54,30 @@ def meus_dados(request):
         'form_endereco': endereco,
     }
     return render(request, 'contas/meus_dados.html', context)
+
+
+def recursos(request):
+    inscricao = request.user.inscricao
+    recursos = inscricao.recurso_set.all().filter(status__exact='3')
+    context = {
+        'recursos': recursos,
+    }
+    return render(request, 'inscricoes/recursos.html', context)
+
+
+def recurso_inscricao(request, tipo):
+    inscricao = request.user.inscricao
+    recurso = inscricao.recurso_set.all().filter(status__exact='3', recurso__isnull=True, tipo__exact=tipo).first()
+    if recurso is None:
+        raise Http404('Página não encontrada')
+    form_recurso = RecursoForm(request.POST or None, instance=recurso)
+    recurso_tipo = 'Socioeconômico' if tipo == 'socio' else 'Reserva de Vagas'
+    if request.method == 'POST':
+        if form_recurso.is_valid():
+            form_recurso.save()
+            return redirect('recursos')
+    context = {
+        'form_recurso': form_recurso,
+        'recurso_tipo': recurso_tipo
+    }
+    return render(request, 'inscricoes/recurso.html', context)

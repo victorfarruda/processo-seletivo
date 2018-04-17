@@ -28,6 +28,8 @@ from contas.views import (
     login_page,
     logout_page,
     meus_dados,
+    recursos,
+    recurso_inscricao,
 )
 from cursos.views import (
     get_cursos,
@@ -43,6 +45,8 @@ urlpatterns = [
     url(r'^candidato/inscricao/$', minha_inscricao, name='minha_inscricao'),
     url(r'^candidato/comprovante/$', comprovante_inscricao, name='comprovante_inscricao'),
     url(r'^candidato/socioeconomico/$', socio_economico_inscricao, name='socio_economico_inscricao'),
+    url(r'^candidato/recursos/$', recursos, name='recursos'),
+    url(r'^candidato/recursos/(?P<tipo>\w+)$', recurso_inscricao, name='recurso_inscricao'),
     url(r'^inscricao/$', inscricao_page, name='inscricao'),
     url(r'^inscricao/get_cursos/(?P<id>\d+)$', get_cursos, name='cursos'),
     url(r'^inscricao/get_curso/(?P<id>\d+)$', get_curso, name='curso'),

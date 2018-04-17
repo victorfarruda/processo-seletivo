@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if recursos %}
+        <header>
+            <h2>Recursos</h2>
+        </header>
+        {% for recurso in recursos %}
+            {% if recurso.tipo == 'reserva' %}
+                <h3>Reserva de Vagas</h3>
+                {% if recurso.recurso is None %}
+                    <a href="{% url 'recurso_inscricao' tipo=recurso.tipo %}" class="button">Tentar recurso de reserva de vagas</a>
+                {% else %}
+                    <a class="button" >Você já tentou o recurso de reserva de vagas</a>
+                {% endif %}
+            {% else %}
+                <h3>Socioeconômico</h3>
+                {% if recurso.recurso is None %}
+                    <a href="{% url 'recurso_inscricao' tipo=recurso.tipo %}" class="button">Tentar recurso socioeconômico</a>
+                {% else %}
+                    <a class="button">Você já tentou o recurso socioeconômico</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <header>
+            <h2>Não há recursos para recorrer.</h2>
+        </header>
+    {% endif %}
+{% endblock %}

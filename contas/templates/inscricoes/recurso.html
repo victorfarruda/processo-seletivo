@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST">
+    <header>
+        <h2>Recurso - {{ recurso_tipo }}</h2>
+        <hr/>
+        <br/>
+    </header>
+    {% csrf_token %}
+    <div class="row">
+        {% for input in form_recurso %}
+            <div class="form-group col-12 12u">
+                <label for="{{ input.name }}">
+                    {{ input.label }}
+                </label>
+                {{ input }}
+            </div>
+        {% endfor %}
+    </div>
+    <button class="button">Enviar Recurso</button>
+</form>
+{% endblock %}

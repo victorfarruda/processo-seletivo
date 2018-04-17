@@ -107,3 +107,20 @@ class ReservaForm(forms.ModelForm):
             if motivo_indeferimento == '':
                 raise forms.ValidationError('Este campo não pode ser vazio.')
         return motivo_indeferimento
+
+
+class RecursoForm(forms.ModelForm):
+    motivo_indeferimento = forms.CharField(label='Motivo do Indeferimento:', widget=forms.Textarea(attrs={'readonly':'readonly'}))
+    recurso = forms.CharField(label='Recurso:', widget=forms.Textarea())
+
+    class Meta:
+        model = Recurso
+        fields = ['motivo_indeferimento', 'recurso',]
+
+    def clean_motivo_indeferimento(self):
+        motivo_indeferimento = self.cleaned_data.get('motivo_indeferimento')
+        if self.instance.id:
+            motivo_indeferimento_antigo = Recurso.objects.get(id__exact=self.instance.id).motivo_indeferimento
+            if motivo_indeferimento != motivo_indeferimento_antigo:
+                raise forms.ValidationError("Você não tem permissão para editar este campo.")
+        return motivo_indeferimento
