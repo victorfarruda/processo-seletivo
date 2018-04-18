@@ -3,6 +3,7 @@ from django.contrib.auth import (
     login,
     logout,
 )
+from django.db.models import Q
 from django.http import (
     request,
     Http404,
@@ -11,7 +12,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 from enderecos.forms import EnderecoForm
-from inscricoes.forms import RecursoForm
+from inscricoes.forms import (
+    RecursoForm,
+    RespostaRecursoForm,
+)
 from .forms import (
     LoginForm,
     PerfilForm,
@@ -58,7 +62,7 @@ def meus_dados(request):
 
 def recursos(request):
     inscricao = request.user.inscricao
-    recursos = inscricao.recurso_set.all().filter(status__exact='3')
+    recursos = inscricao.recurso_set.all()
     context = {
         'recursos': recursos,
     }
@@ -67,7 +71,11 @@ def recursos(request):
 
 def recurso_inscricao(request, tipo):
     inscricao = request.user.inscricao
-    recurso = inscricao.recurso_set.all().filter(status__exact='3', recurso__isnull=True, tipo__exact=tipo).first()
+    recurso = inscricao.recurso_set.all().filter(
+        Q(recurso__isnull=True) | Q(recurso__exact=''),
+        Q(status__exact='3'),
+        Q(tipo__exact=tipo),
+    ).first()
     if recurso is None:
         raise Http404('Página não encontrada')
     form_recurso = RecursoForm(request.POST or None, instance=recurso)
@@ -76,6 +84,22 @@ def recurso_inscricao(request, tipo):
         if form_recurso.is_valid():
             form_recurso.save()
             return redirect('recursos')
+    context = {
+        'form_recurso': form_recurso,
+        'recurso_tipo': recurso_tipo
+    }
+    return render(request, 'inscricoes/recurso.html', context)
+
+
+def recurso_resultado(request, tipo):
+    inscricao = request.user.inscricao
+    recurso = inscricao.recurso_set.all().filter(
+        Q(tipo__exact=tipo),
+    ).first()
+    if recurso is None:
+        raise Http404('Página não encontrada')
+    form_recurso = RespostaRecursoForm(request.POST or None, instance=recurso)
+    recurso_tipo = 'Socioeconômico' if tipo == 'socio' else 'Reserva de Vagas'
     context = {
         'form_recurso': form_recurso,
         'recurso_tipo': recurso_tipo

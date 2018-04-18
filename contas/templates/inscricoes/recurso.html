@@ -18,6 +18,8 @@
             </div>
         {% endfor %}
     </div>
-    <button class="button">Enviar Recurso</button>
+    {% if not 'resultado' in request.path %}
+        <button class="button">Enviar Recurso</button>
+    {% endif %}
 </form>
 {% endblock %}

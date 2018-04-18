@@ -54,10 +54,13 @@ class MinhaInscricaoForm(forms.ModelForm):
                                          widget=forms.Select(attrs={'class': 'form-control text'}))
     modalidade = forms.ChoiceField(label='Modalidade',
                                         widget=forms.Select(attrs={'class': 'form-control text'}))
+    valor = forms.CharField(label='Taxa de Inscrição',
+                                      widget=forms.TextInput(
+                                          attrs={'class': 'form-control text', 'placeholder': 'Taxa de Inscrição'}))
 
     class Meta:
         model = Inscricao
-        exclude = ['candidato', 'valor']
+        exclude = ['candidato',]
 
     def __init__(self, *args, **kwargs):
         super(MinhaInscricaoForm, self).__init__(*args, **kwargs)
@@ -124,3 +127,39 @@ class RecursoForm(forms.ModelForm):
             if motivo_indeferimento != motivo_indeferimento_antigo:
                 raise forms.ValidationError("Você não tem permissão para editar este campo.")
         return motivo_indeferimento
+
+
+class RecursoAdminForm(RecursoForm):
+    status = forms.ChoiceField(label='Selecione:', widget=forms.RadioSelect(attrs={'class': 'status'}),
+                               choices=RECURSO_CHOICES)
+    valor = forms.ChoiceField(label='Informe o valor da Inscrição:', widget=forms.RadioSelect(attrs={'class': 'valor'}),
+                              choices=INSCRICAO_VALOR, required=False)
+    recurso = forms.CharField(label='Recurso:', widget=forms.Textarea(attrs={'readonly': 'readonly'}))
+    resposta_recurso = forms.CharField(label='Análise de Recurso:',
+                                           widget=forms.Textarea(attrs={'class': 'motivo'}), required=False)
+
+    class Meta:
+        model = Recurso
+        fields = ['motivo_indeferimento', 'recurso', 'status', 'resposta_recurso']
+
+    def clean_motivo_indeferimento(self):
+        status = self.cleaned_data.get('status')
+        motivo_indeferimento = self.cleaned_data.get('motivo_indeferimento')
+        if status == '2':  # Deferido
+            return motivo_indeferimento
+        if status == '3':  # Indeferido
+            if motivo_indeferimento == '':
+                raise forms.ValidationError('Este campo não pode ser vazio.')
+        return motivo_indeferimento
+
+
+class RespostaRecursoForm(RecursoForm):
+    recurso = forms.CharField(label='Recurso:', widget=forms.Textarea(attrs={'readonly': 'readonly'}), required=False)
+    status = forms.ChoiceField(label='Seu Recurso foi:', widget=forms.RadioSelect(attrs={'class': 'status'}),
+                               choices=RECURSO_CHOICES)
+    resposta_recurso = forms.CharField(label='Análise de Recurso:',
+                                       widget=forms.Textarea(attrs={'readonly': 'readonly'}), required=False)
+
+    class Meta:
+        model = Recurso
+        fields = ['motivo_indeferimento', 'recurso', 'status', 'resposta_recurso']

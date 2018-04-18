@@ -1,0 +1,78 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_static admin_modify %}
+{% block content %}
+    <div id="content-main">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% if form.non_field_errors|length > 0 %}
+                <p class="errornote">
+                    "Please correct the errors below."
+                </p>
+                {{ form.non_field_errors }}
+            {% endif %}
+            <fieldset class="module aligned">
+                {% for field in form %}
+                    <div class="form-row">
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.field.help_text %}
+                            <p class="help">
+                                {{ field.field.help_text|safe }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            {% if recurso.tipo == 'reserva' %}
+                <input type="hidden" class="reserva" value="1">
+            {% endif %}
+            <div class="submit-row">
+                <input type="submit" class="default" value="Submit">
+            </div>
+        </form>
+    </div>
+    {% block admin_change_form_document_ready %}
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            var div_valor = $(".valor").closest('.form-row')
+            div_valor.css('display', 'none');
+            var div_motivo = $(".motivo").closest('.form-row')
+            div_motivo.css('display', 'none');
+
+            var status = $('[name=status]:checked').val()
+            if ($(".reserva").val() != 1){
+                if (status == 2){
+                    div_valor.css('display', 'block');
+                    $(".valor").attr('required', 'required')
+                }
+            }
+            if (status == 3){
+                div_motivo.css('display', 'block');
+                $(".motivo").attr('required', 'required')
+            }
+
+            $('[name=status]').change(function(){
+                if ($('[name=status]:checked').val() == 2){
+                    if ($(".reserva").val() != 1){
+                        div_valor.css('display', 'block');
+                        $(".valor").attr('required', 'required')
+                    }
+                    div_motivo.css('display', 'none');
+                    $(".motivo").removeAttr('required')
+                }
+                if ($('[name=status]:checked').val() == 3){
+                    div_motivo.css('display', 'block');
+                    $(".motivo").attr('required', 'required')
+                    div_valor.css('display', 'none');
+                    $(".valor").removeAttr('required')
+                }
+            })
+        });
+        </script>
+    {% endblock %}
+{% endblock %}
+
+
+
