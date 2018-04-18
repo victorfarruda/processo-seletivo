@@ -5,6 +5,7 @@
 {% url 'meus_dados' as meus_dados_url %}
 {% url 'minha_inscricao' as minha_inscricao_url %}
 {% url 'comprovante_inscricao' as comprovante_inscricao_url %}
+{% url 'recursos' as recursos_url %}
 <html>
 	<head>
         {% include 'snippets/css.html' %}
@@ -35,33 +36,36 @@
                                 </li>
                                 {% if request.user.is_authenticated %}
                                     <li class="{% if meus_dados_url == request.path %}current_page_item{% endif %}">
-                                        <a href="{{ meus_dados_url }}">Meus Dados</a>
+                                        <a href="{{ meus_dados_url }}">Dados</a>
                                     </li>
                                     <li class="{% if minha_inscricao_url == request.path %}current_page_item{% endif %}">
-                                        <a href="{{ minha_inscricao_url }}">Minha Inscrição</a>
+                                        <a href="{{ minha_inscricao_url }}">Inscrição</a>
                                     </li>
                                     <li class="{% if comprovante_inscricao_url == request.path %}current_page_item{% endif %}">
-                                        <a href="{{ comprovante_inscricao_url }}">Comprovante de Inscrição</a>
+                                        <a href="{{ comprovante_inscricao_url }}">Comprovante</a>
                                     </li>
-                                    <li>
-                                        <span>Dropdown</span>
-                                        <ul>
-                                            <li><a href="#">Lorem ipsum dolor</a></li>
-                                            <li><a href="#">Magna phasellus</a></li>
-                                            <li><a href="#">Etiam dolore nisl</a></li>
-                                            <li>
-                                                <span>Phasellus consequat</span>
-                                                <ul>
-                                                    <li><a href="#">Lorem ipsum dolor</a></li>
-                                                    <li><a href="#">Phasellus consequat</a></li>
-                                                    <li><a href="#">Magna phasellus</a></li>
-                                                    <li><a href="#">Etiam dolore nisl</a></li>
-                                                    <li><a href="#">Veroeros feugiat</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">Veroeros feugiat</a></li>
-                                        </ul>
+									<li class="{% if recursos_url == request.path %}current_page_item{% endif %}">
+                                        <a href="{{ recursos_url }}">Recursos</a>
                                     </li>
+                                    <!--<li>-->
+                                        <!--<span>Dropdown</span>-->
+                                        <!--<ul>-->
+                                            <!--<li><a href="#">Lorem ipsum dolor</a></li>-->
+                                            <!--<li><a href="#">Magna phasellus</a></li>-->
+                                            <!--<li><a href="#">Etiam dolore nisl</a></li>-->
+                                            <!--<li>-->
+                                                <!--<span>Phasellus consequat</span>-->
+                                                <!--<ul>-->
+                                                    <!--<li><a href="#">Lorem ipsum dolor</a></li>-->
+                                                    <!--<li><a href="#">Phasellus consequat</a></li>-->
+                                                    <!--<li><a href="#">Magna phasellus</a></li>-->
+                                                    <!--<li><a href="#">Etiam dolore nisl</a></li>-->
+                                                    <!--<li><a href="#">Veroeros feugiat</a></li>-->
+                                                <!--</ul>-->
+                                            <!--</li>-->
+                                            <!--<li><a href="#">Veroeros feugiat</a></li>-->
+                                        <!--</ul>-->
+                                    <!--</li>-->
                                     <li class="{% if logout_url == request.path %}current_page_item{% endif %}" style="float:right !important;">
                                         <a href="{{ logout_url }}">Logout</a>
                                     </li>
