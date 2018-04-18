@@ -12,6 +12,8 @@
                     <a href="{% url 'recurso_inscricao' tipo=recurso.tipo %}" class="button">Tentar recurso de reserva de vagas</a>
                 {% elif recurso.resposta_recurso is not None and recurso.resposta_recurso != '' %}
                     <a href="{% url 'recurso_resultado' tipo=recurso.tipo %}" class="button">Ver resultado de recurso de reserva de vagas</a>
+                {% elif recurso.status == '2' %}
+                    <a href="{% url 'recurso_resultado' tipo=recurso.tipo %}" class="button">Ver resultado de recurso de reserva de vagas</a>
                 {% else %}
                     <a class="button" >Você já tentou o recurso de reserva de vagas</a>
                 {% endif %}
@@ -20,6 +22,8 @@
                 {% if recurso.recurso is None or recurso.recurso == '' %}
                     <a href="{% url 'recurso_inscricao' tipo=recurso.tipo %}" class="button">Tentar recurso socioeconômico</a>
                 {% elif recurso.resposta_recurso is not None and recurso.resposta_recurso != '' %}
+                    <a href="{% url 'recurso_resultado' tipo=recurso.tipo %}" class="button">Ver resultado de recurso socioeconômico</a>
+                {% elif recurso.status == '2' %}
                     <a href="{% url 'recurso_resultado' tipo=recurso.tipo %}" class="button">Ver resultado de recurso socioeconômico</a>
                 {% else %}
                     <a class="button">Você já tentou o recurso socioeconômico</a>
